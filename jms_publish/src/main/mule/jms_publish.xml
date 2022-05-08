@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="24c20e63-62cc-4cb8-9541-d2d44c03533c" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="82597881-b515-48c4-b92e-9810ab7db679" >
+		<jms:active-mq-connection username="admin" password="admin" >
+			<jms:factory-configuration brokerUrl="tcp://localhost:61616" />
+		</jms:active-mq-connection>
+	</jms:config>
+	<flow name="jms_publishFlow" doc:id="aa850409-d045-4890-82c2-519b2e3ecd70" >
+		<http:listener doc:name="Listener" doc:id="3e060d8e-ff38-4f17-a850-3cba5c5649da" config-ref="HTTP_Listener_config" path="/jms"/>
+		<logger level="INFO" doc:name="Logger" doc:id="bce3f079-a29a-48d4-b1f2-c02c4381a53f" message="#[payload]"/>
+		<jms:publish doc:name="Publish" doc:id="37af177c-0321-40b1-ac80-ca9b6b8ca81d" config-ref="JMS_Config" destination="mulesoftmsg"/>
+		<logger level="INFO" doc:name="Logger" doc:id="2bfb3b82-42cf-4192-b3ec-55a609408184" message="Mule msagge info published"/>
+	</flow>
+</mule>

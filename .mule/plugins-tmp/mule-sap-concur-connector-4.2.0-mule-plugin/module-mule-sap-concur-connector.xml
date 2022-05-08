@@ -1,0 +1,2103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module name="SAP Concur"
+        prefix="mule-sap-concur-connector"
+        namespace="http://www.mulesoft.org/schema/mule/mule-sap-concur-connector"
+        doc:description="Concur REST API v3.0/v3.1"
+        xmlns="http://www.mulesoft.org/schema/mule/module"
+        xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+        xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+        xmlns:http="http://www.mulesoft.org/schema/mule/http"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+           http://www.mulesoft.org/schema/mule/module http://www.mulesoft.org/schema/mule/module/current/mule-module.xsd
+           http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+           http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+
+    <property name="property_host" displayName="host" type="string" defaultValue="implementation.concursolutions.com" summary="Host for consuming API"/>
+    <property name="property_port" displayName="port" type="string" defaultValue="443" summary="Port for consuming API"/>
+    <property name="property_basePath" displayName="basePath" type="string" defaultValue="/api" summary="Basepath for consuming API"/>
+    <property name="property_protocol" displayName="protocol" type="string" defaultValue="HTTPS" summary="Protocol for consuming API"/>
+                                <property name="property_proxyConfig" displayName="Proxy Config Reference" type="string" use="OPTIONAL" summary="Proxy config reference" tab="Proxy"/>
+
+                                <property name="property_authorization" displayName="authorization" type="string" summary="authorization"/>
+            
+    <http:request-config name="mule-sap-concur-connector-httpreq-config" basePath="#[vars.property_basePath]">
+        <http:request-connection
+                    host="#[vars.property_host]"
+                    protocol="#[vars.property_protocol]"
+                    port="#[vars.property_port]"
+                                proxyConfig="#[vars.property_proxyConfig]">
+                </http:request-connection>
+    </http:request-config>
+
+
+    <operation name="get-allocations" >
+                <parameters>
+                                        <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. The default is 25 and the maximum is 100."/>
+                            <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="report-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The unique identifier for the report as it appears in the Concur Expense UI. Format: A variable-length string. Maximum length: 32 characters."/>
+                            <parameter name="entry-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The unique identifier for the expense entry."/>
+                            <parameter name="itemization-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The unique identifier for the expense itemization."/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the allocation. The user must have the Web Services Admin role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/allocations" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'limit': vars['limit'],'offset': vars['offset'],'reportID': vars['report-id'],'entryID': vars['entry-id'],'itemizationID': vars['itemization-id'],'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-allocations-response-type" />
+            </operation>
+    <operation name="get-allocation" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the allocation. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The unique identifier for the allocation."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/allocations/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-allocation-response-type" />
+            </operation>
+    <operation name="get-attendees" >
+                <parameters>
+                                        <parameter name="external-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The external ID of an attendee. By entering a value for this parameter, you can limit the results to the attendees who match the specified external ID. Up to 10 comma-separated external IDs may be specified."/>
+                            <parameter name="attendee-type-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The ID of an attendee type. By entering a value for this parameter, you can limit the results to the attendees who match the specified type."/>
+                            <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. Default value: 25"/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user that has added the attendee to an expense. The user who is performing this API request must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/attendees" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'externalID': vars['external-id'],'attendeeTypeID': vars['attendee-type-id'],'offset': vars['offset'],'limit': vars['limit'],'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-attendees-response-type" />
+            </operation>
+    <operation name="create-attendee" >
+                <parameters>
+                            <parameter name="create-attendee-request-data" type="create-attendee-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user that has added the attendee to an expense. The user who is performing this API request must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/attendees" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-attendee-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-attendee-response-type" />
+            </operation>
+    <operation name="get-attendee" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user that has added the attendee to an expense. The user who is performing this API request must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    />
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/attendees/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-attendee-response-type" />
+            </operation>
+    <operation name="update-attendee" >
+                <parameters>
+                            <parameter name="update-attendee-request-data" type="update-attendee-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user that has added the attendee to an expense. The user who is performing this API request must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    />
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/attendees/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-attendee-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-attendee-types" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. Default value: 25"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/attendeetypes" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-attendee-types-response-type" />
+            </operation>
+    <operation name="get-attendee-type" >
+                <parameters>
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the attendee type."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/attendeetypes/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-attendee-type-response-type" />
+            </operation>
+    <operation name="update-attendee-type" >
+                <parameters>
+                            <parameter name="update-attendee-type-request-data" type="update-attendee-type-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the attendee type."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/attendeetypes/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-attendee-type-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-digtal-tax-invoices" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. Default value: 25"/>
+                            <parameter name="modifiedafter"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="A modification date for the queue record; this parameter can be used to limit the results of the GET request to the queue items that have been added since the last time the validation company queried the queue. The user must have the Web Services Admin role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/digitaltaxinvoices" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'],'modifiedafter': vars['modifiedafter'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-digtal-tax-invoices-response-type" />
+            </operation>
+    <operation name="get-digtal-tax-invoice" >
+                <parameters>
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the digital tax invoice to update."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/digitaltaxinvoices/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-digtal-tax-invoice-response-type" />
+            </operation>
+    <operation name="update-digtal-tax-invoice" >
+                <parameters>
+                            <parameter name="update-digtal-tax-invoice-request-data" type="update-digtal-tax-invoice-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the digital tax invoice to update."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/digitaltaxinvoices/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-digtal-tax-invoice-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-expense-entries" >
+                <parameters>
+                                        <parameter name="report-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The report ID of the entries to be retrieved.  Format: An alpha-numeric GUID string."/>
+                            <parameter name="payment-type-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The ID of the payment type of the entries to be retrieved."/>
+                            <parameter name="batch-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The batch ID for the entries to be retrieved. The batch ID identifies the batch that contains the report payee associated with the entries. Use the GET Payment Batch function to learn the Payment Type ID for the desired Payment Type."/>
+                            <parameter name="is-billable"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Determines whether the operation retrieves entries that are billable. Format: true or false"/>
+                            <parameter name="attendee-type-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The ID of the attendee type for the entries to be retrieved."/>
+                            <parameter name="has-attendees"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Determines whether the operation retrieves entries that have attendees. Format: true or false"/>
+                            <parameter name="has-vat"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Determines whether the operation retrieves entries that have VAT details. Format: true or false"/>
+                            <parameter name="expense-type-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The code for the expense type for the entries to be retrieved."/>
+                            <parameter name="attendee-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The attendee associated with the entries to be retrieved."/>
+                            <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. Default value: 25"/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entries" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'reportID': vars['report-id'],'paymentTypeID': vars['payment-type-id'],'batchID': vars['batch-id'],'isBillable': vars['is-billable'],'attendeeTypeCode': vars['attendee-type-code'],'hasAttendees': vars['has-attendees'],'hasVAT': vars['has-vat'],'expenseTypeCode': vars['expense-type-code'],'attendeeID': vars['attendee-id'],'offset': vars['offset'],'limit': vars['limit'],'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-expense-entries-response-type" />
+            </operation>
+    <operation name="create-expense-entry" >
+                <parameters>
+                            <parameter name="create-expense-entry-request-data" type="create-expense-entry-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entries" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-expense-entry-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-expense-entry-response-type" />
+            </operation>
+    <operation name="get-expense-entry" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the expense entry to delete."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entries/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-expense-entry-response-type" />
+            </operation>
+    <operation name="update-expense-entry" >
+                <parameters>
+                            <parameter name="update-expense-entry-request-data" type="update-expense-entry-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the expense entry to delete."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entries/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-expense-entry-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="delete-expense-entry" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the entries. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the expense entry to delete."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entries/{id}" method="DELETE" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-entry-attendee-associations" >
+                <parameters>
+                                        <parameter name="entry-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The ID of the entry for which to retrieve entry-attendee associations."/>
+                            <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. Default value: 25"/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns this entry-attendee association. The user must have the Web Services Admin role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entryattendeeassociations" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'entryID': vars['entry-id'],'offset': vars['offset'],'limit': vars['limit'],'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-entry-attendee-associations-response-type" />
+            </operation>
+    <operation name="create-entry-attendee-association" >
+                <parameters>
+                            <parameter name="create-entry-attendee-association-request-data" type="create-entry-attendee-association-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns this entry-attendee association. The user must have the Web Services Admin role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entryattendeeassociations" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-entry-attendee-association-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-entry-attendee-association-response-type" />
+            </operation>
+    <operation name="get-entry-attendee-association" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns this entry-attendee association. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the entry-attendee association to delete."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entryattendeeassociations/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-entry-attendee-association-response-type" />
+            </operation>
+    <operation name="update-entry-attendee-association" >
+                <parameters>
+                            <parameter name="update-entry-attendee-association-request-data" type="update-entry-attendee-association-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns this entry-attendee association. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the entry-attendee association to delete."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entryattendeeassociations/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-entry-attendee-association-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="delete-entry-attendee-association" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns this entry-attendee association. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the entry-attendee association to delete."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/entryattendeeassociations/{id}" method="DELETE" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-expense-group-configurations" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user associated with this expense group configuration. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return Default value: 10"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/expensegroupconfigurations" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'],'offset': vars['offset'],'limit': vars['limit'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-expense-group-configurations-response-type" />
+            </operation>
+    <operation name="get-expense-group-configuration" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user associated with this expense group configuration. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the expense group configuration."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/expensegroupconfigurations/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-expense-group-configuration-response-type" />
+            </operation>
+    <operation name="get-expense-itemizations" >
+                <parameters>
+                                        <parameter name="report-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The report ID of the itemizations to be retrieved.  Format: An alpha-numeric string"/>
+                            <parameter name="entry-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The entry ID for the itemizations to be retrieved."/>
+                            <parameter name="expense-type-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The expense type code for the itemizations to be retrieved."/>
+                            <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. Default value: 25"/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the itemizations. The user must have the Web Services Admin role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/itemizations" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'reportID': vars['report-id'],'entryID': vars['entry-id'],'expenseTypeCode': vars['expense-type-code'],'offset': vars['offset'],'limit': vars['limit'],'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-expense-itemizations-response-type" />
+            </operation>
+    <operation name="create-expense-itemization" >
+                <parameters>
+                            <parameter name="create-expense-itemization-request-data" type="create-expense-itemization-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the itemizations. The user must have the Web Services Admin role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/itemizations" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-expense-itemization-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-expense-itemization-response-type" />
+            </operation>
+    <operation name="get-expense-itemization" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the itemizations. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the expense itemization to delete."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/itemizations/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-expense-itemization-response-type" />
+            </operation>
+    <operation name="update-expense-itemization" >
+                <parameters>
+                            <parameter name="update-expense-itemization-request-data" type="update-expense-itemization-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the itemizations. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the expense itemization to delete."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/itemizations/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-expense-itemization-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="delete-expense-itemization" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns the itemizations. The user must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the expense itemization to delete."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/itemizations/{id}" method="DELETE" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-quick-expenses" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The start of the page offset."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return (default 25)."/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/quickexpenses" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'],'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-quick-expenses-response-type" />
+            </operation>
+    <operation name="create-quick-expense" >
+                <parameters>
+                            <parameter name="create-quick-expense-request-data" type="create-quick-expense-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/quickexpenses" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-quick-expense-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-quick-expense-response-type" />
+            </operation>
+    <operation name="get-quick-expense" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the quick expense to be deleted."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/quickexpenses/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-quick-expense-response-type" />
+            </operation>
+    <operation name="update-quick-expense" >
+                <parameters>
+                            <parameter name="update-quick-expense-request-data" type="update-quick-expense-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the quick expense to be deleted."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/quickexpenses/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-quick-expense-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="delete-quick-expense" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the quick expense to be deleted."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/quickexpenses/{id}" method="DELETE" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-receipt-images" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Starting page offset"/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="Number of records to return (default 25)"/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/receiptimages" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'],'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-receipt-images-response-type" />
+            </operation>
+    <operation name="create-receipt-image" >
+                <parameters>
+                            <parameter name="create-receipt-image-request-data" type="string" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/receiptimages" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-receipt-image-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-receipt-image-response-type" />
+            </operation>
+    <operation name="get-receipt-image" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="ID of the receipt image to delete"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/receiptimages/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-receipt-image-response-type" />
+            </operation>
+    <operation name="append-receipt-image" >
+                <parameters>
+                            <parameter name="append-receipt-image-request-data" type="string" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="ID of the receipt image to delete"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/receiptimages/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['append-receipt-image-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="delete-receipt-image" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="ID of the receipt image to delete"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/receiptimages/{id}" method="DELETE" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-reports" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Starting page offset"/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="Number of records to return (default 25)"/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Optional. The login ID of the report owner(s) to use when searching for reports. If the value is set to LoginID, reports for the report owner with this login ID value are returned. If the value is set to ALL, reports for all report owners are returned. If this parameter is not specified, reports for the OAuth Consumer are returned. The access token owner (OAuth Consumer) must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="approval-status-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The status code for the Approval Status. The values can include Concur Expense standard codes or custom codes. The Concur Expense standard code values are: A_AAFH - Report submission triggered an anomaly and fraud check; A_ACCO - Report is pending reviews; A_APPR - Report has been approved; A_EXTV - Report is pending external validation; A_FILE - Report has been submitted; A_NOTF - Report has not been submitted; A_PBDG - Report approval is pending Budget approval; A_PECO - Report approval is pending Cost object approval; A_PEND - Report is pending manager approval; A_PVAL - Report is pending prepayment validation; A_RESU - Report needs to be resubmitted; A_RHLD - Report submission is pending receipt images; A_TEXP - Report expired in approval queue. For custom codes, contact Concur Developer Support."/>
+                            <parameter name="payment-status-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The payment status code for the report. The values can include Concur Expense standard codes or custom codes. The Concur Expense standard code values are: P_HOLD - Report payment is on hold; P_NOTP - Report has not been paid; P_PAID - Report has been paid; P_PAYC - Payment is confirmed. Some or all of the report expenses have been paid; P_PROC - Report is in process to be paid. For custom codes, contact Concur Developer Support."/>
+                            <parameter name="currency-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The 3-letter ISO 4217 currency code for the report currency. Example: USD."/>
+                            <parameter name="payment-type"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The unique identifier for the payment type that is the payment type for at least one expense entry in the report. Use PaymentTypeID from Response of GET Expense Group Configurations V3 to obtain valid payment types."/>
+                            <parameter name="reimbursement-method"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The method the report owner will be reimbursed. VALUES: ADPPAYR - ADP Payroll; APCHECK - AP (Company Check); CNQRPAY - Expense Pay; PMTSERV - Other Payment Service. NOTE: PAY_PAL is NOT supported."/>
+                            <parameter name="approver-login-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID for the report approver that is the current approver assigned to the report."/>
+                            <parameter name="expense-type-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The expense type code that is the expense type for at least one expense entry in the report. Use ExpenseTypeCode from Response of GET Expense Group Configurations V3."/>
+                            <parameter name="attendee-type-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The report contains expense entries that have attendees of the specified type."/>
+                            <parameter name="country-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The report country. Maximum 2 characters. Format: The ISO 3166-1 alpha-2 country code. Example: United States is US."/>
+                            <parameter name="batch-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The unique identifier for a payment batch where there is at least one report payee within the report. Use the BatchID from Response of GET Payment Batch List."/>
+                            <parameter name="vendor-name"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The Vendor Description that is the vendor for at least one expense entry in the report."/>
+                            <parameter name="has-vat"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Determines if the report has at least one expense entry with VAT details. FORMAT: true or false."/>
+                            <parameter name="has-images"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Determines if the report has at least one expense entry with an entry image or if there is a report image for this report. FORMAT: true or false."/>
+                            <parameter name="has-attendees"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Determines if the report has at least one expense entry with an attendee. FORMAT: true or false."/>
+                            <parameter name="has-billable-expenses"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="The IsBillable flag for at least one expense entry in the report. FORMAT: true or false."/>
+                            <parameter name="is-test-user"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="The report owner is a test user using the report for testing purposes in a non-production envirnment. FORMAT: true or false."/>
+                            <parameter name="expense-group-config-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The unique identifier for the expense group configuration associated to the report&apos;s expense group. Use the ID from the Response of the Expense Group Configurations V3."/>
+                            <parameter name="cost-object"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The list item code for an allocation field for at least allocation in the report."/>
+                            <parameter name="entry-transaction-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The entry transaction date for at least one expense entry in the report is before this date.Format: YYYY-MM-DD"/>
+                            <parameter name="entry-transaction-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The entry transaction date for at least one expense entry in the report is after this date.Format: YYYY-MM-DD"/>
+                            <parameter name="create-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report create date is before this date.Format: YYYY-MM-DD"/>
+                            <parameter name="create-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report create date is after this date.Format: YYYY-MM-DD"/>
+                            <parameter name="user-defined-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report user defined date is before this date.Format: YYYY-MM-DD"/>
+                            <parameter name="user-defined-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report user defined date is after this date.Format: YYYY-MM-DD"/>
+                            <parameter name="submit-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report submit date is before this date.Format: YYYY-MM-DD"/>
+                            <parameter name="submit-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report submit date is after this date.Format: YYYY-MM-DD"/>
+                            <parameter name="processing-payment-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report processing payment date is before this date.Format: YYYY-MM-DD"/>
+                            <parameter name="processing-payment-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report processing payment date is after this date. Format: YYYY-MM-DD"/>
+                            <parameter name="paid-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report paid date is before this date.Format: YYYY-MM-DD"/>
+                            <parameter name="paid-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report paid date is after this date.Format: YYYY-MM-DD"/>
+                            <parameter name="modified-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report modified date is before this date.Format: YYYY-MM-DD"/>
+                            <parameter name="modified-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The report modified date is after this date.Format: YYYY-MM-DD"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/reports" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'],'user': vars['user'],'approvalStatusCode': vars['approval-status-code'],'paymentStatusCode': vars['payment-status-code'],'currencyCode': vars['currency-code'],'paymentType': vars['payment-type'],'reimbursementMethod': vars['reimbursement-method'],'approverLoginID': vars['approver-login-id'],'expenseTypeCode': vars['expense-type-code'],'attendeeTypeCode': vars['attendee-type-code'],'countryCode': vars['country-code'],'batchID': vars['batch-id'],'vendorName': vars['vendor-name'],'hasVAT': vars['has-vat'],'hasImages': vars['has-images'],'hasAttendees': vars['has-attendees'],'hasBillableExpenses': vars['has-billable-expenses'],'isTestUser': vars['is-test-user'],'expenseGroupConfigID': vars['expense-group-config-id'],'costObject': vars['cost-object'],'entryTransactionDateBefore': vars['entry-transaction-date-before'],'entryTransactionDateAfter': vars['entry-transaction-date-after'],'createDateBefore': vars['create-date-before'],'createDateAfter': vars['create-date-after'],'userDefinedDateBefore': vars['user-defined-date-before'],'userDefinedDateAfter': vars['user-defined-date-after'],'submitDateBefore': vars['submit-date-before'],'submitDateAfter': vars['submit-date-after'],'processingPaymentDateBefore': vars['processing-payment-date-before'],'processingPaymentDateAfter': vars['processing-payment-date-after'],'paidDateBefore': vars['paid-date-before'],'paidDateAfter': vars['paid-date-after'],'modifiedDateBefore': vars['modified-date-before'],'modifiedDateAfter': vars['modified-date-after'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-reports-response-type" />
+            </operation>
+    <operation name="create-report" >
+                <parameters>
+                            <parameter name="create-report-request-data" type="create-report-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Optional. The login ID for the Report Owner."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/reports" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-report-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-report-response-type" />
+            </operation>
+    <operation name="get-report" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Optional. The login ID of the report owner(s) to use when searching for reports. If the value is set to LoginID, reports for the report owner with this login ID value are returned. If the value is set to ALL, reports for all report owners are returned. If this parameter is not specified, reports for the OAuth Consumer are returned. The access token owner (OAuth Consumer) must have the Web Services Admin role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The unique identifier for the report."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/reports/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-report-response-type" />
+            </operation>
+    <operation name="update-report" >
+                <parameters>
+                            <parameter name="update-report-request-data" type="update-report-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Optional. The login ID for the Report Owner."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The unique identifier for the report."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/expense/reports/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-report-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-list-items" >
+                <parameters>
+                                        <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. The default is 25 and the maximum is 100."/>
+                            <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The start of the page offset. The default is from the beginning."/>
+                            <parameter name="list-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The unique identifier for the list this item is a member."/>
+                            <parameter name="name"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The name of the listItem. Text Max length: 64."/>
+                            <parameter name="parent-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The unique identifier of this item&apos;s parent. Is empty when there is no parent."/>
+                            <parameter name="level1code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the first level of the list. All lists have at least a Level1Code. Text maximum 32 characters"/>
+                            <parameter name="level2code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the second level of the list. Empty when this level doesn&apos;t exist in the list. Text maximum 32 characters"/>
+                            <parameter name="level3code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the third level of the list. Empty when this level doesn&apos;t exist in the list. Text maximum 32 characters"/>
+                            <parameter name="level4code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the fourth level of the list. Empty when this level doesn&apos;t exist in the list. Text maximum 32 characters"/>
+                            <parameter name="level5code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the fifth level of the list. Empty when this level doesn&apos;t exist in the list. Text maximum 32 characters"/>
+                            <parameter name="level6code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the sixth level of the list. Empty when this level doesn&apos;t exist in the list. Text maximum 32 characters"/>
+                            <parameter name="level7code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the seventh level of the list. Empty when this level doesn&apos;t exist in the list. Text maximum 32 characters"/>
+                            <parameter name="level8code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the eighth level of the list. Empty when this level doesn&apos;t exist in the list. Text maximum 32 characters"/>
+                            <parameter name="level9code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the ninth level of the list. Empty when this level doesn&apos;t exist in the list. Text maximum 32 characters"/>
+                            <parameter name="level10code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The item code for the tenth level of the list. Empty when this level doesn&apos;t exist in the list. Text maximum 32 characters"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/common/listitems" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'limit': vars['limit'],'offset': vars['offset'],'listId': vars['list-id'],'name': vars['name'],'parentId': vars['parent-id'],'level1Code': vars['level1code'],'level2Code': vars['level2code'],'level3Code': vars['level3code'],'level4Code': vars['level4code'],'level5Code': vars['level5code'],'level6Code': vars['level6code'],'level7Code': vars['level7code'],'level8Code': vars['level8code'],'level9Code': vars['level9code'],'level10Code': vars['level10code'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-list-items-response-type" />
+            </operation>
+    <operation name="create-list-item" >
+                <parameters>
+                            <parameter name="create-list-item-request-data" type="create-list-item-request-type" use="REQUIRED" role="PRIMARY" />
+                                </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/common/listitems" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-list-item-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                        </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-list-item-response-type" />
+            </operation>
+    <operation name="get-list-item" >
+                <parameters>
+                                        <parameter name="list-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The unique identifier for the list this item is a member."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The unique identifier of the listitem to delete"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/common/listitems/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'listId': vars['list-id'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-list-item-response-type" />
+            </operation>
+    <operation name="update-list-item" >
+                <parameters>
+                            <parameter name="update-list-item-request-data" type="update-list-item-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The unique identifier of the listitem to delete"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/common/listitems/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-list-item-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="delete-list-item" >
+                <parameters>
+                                        <parameter name="list-id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The unique identifier of the list associated with a listitem to be deleted"/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The unique identifier of the listitem to delete"/>
+                            <parameter name="content-type"
+                    type="string"
+                    defaultValue="application/json"                    use="OPTIONAL"                    />
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/common/listitems/{id}" method="DELETE" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Content-type': vars['content-type'],'Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'listId': vars['list-id'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-locations" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. Default value: 25"/>
+                            <parameter name="name"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="A common name associated with the location. This name can be a location description such as a neighborhood (SoHo), a landmark (Statue of Liberty), or a city name (New York)."/>
+                            <parameter name="city"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The city name of the location."/>
+                            <parameter name="country-subdivision"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The &lt;a target=&quot;_blank&quot; href=&quot;http://en.wikipedia.org/wiki/ISO_3166-2&quot;&gt;ISO 3166-2:2007 country subdivision code&lt;/a&gt; for the location. Example: US-WA"/>
+                            <parameter name="country"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The 2-letter &lt;a target=&quot;_blank&quot; href=&quot;http://en.wikipedia.org/wiki/ISO_3166-1_alpha-2&quot;&gt;ISO 3166-1 country code&lt;/a&gt; for the location. Example: United States is US"/>
+                            <parameter name="administrative-region"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The administrative region of the location. An administrative region is a government unit, such as a county, that contains one or more cities."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/common/locations" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'],'name': vars['name'],'city': vars['city'],'countrySubdivision': vars['country-subdivision'],'country': vars['country'],'administrativeRegion': vars['administrative-region'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-locations-response-type" />
+            </operation>
+    <operation name="get-location" >
+                <parameters>
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The ID of the location."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/common/locations/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-location-response-type" />
+            </operation>
+    <operation name="get-users" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return. Default value: 25. Maximum: 100."/>
+                            <parameter name="primary-email"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The primary email of the user."/>
+                            <parameter name="employee-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The employee ID of the user."/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user."/>
+                            <parameter name="last-name"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The last name of the user."/>
+                            <parameter name="active"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Indicates whether to return active or inactive users. FORMAT: true or false"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/common/users" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'],'primaryEmail': vars['primary-email'],'employeeID': vars['employee-id'],'user': vars['user'],'lastName': vars['last-name'],'active': vars['active'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-users-response-type" />
+            </operation>
+    <operation name="create-payment-request" >
+                <parameters>
+                            <parameter name="create-payment-request-request-data" type="create-payment-request-request-type" use="REQUIRED" role="PRIMARY" />
+                                </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/paymentrequest" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-payment-request-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                        </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-payment-request-response-type" />
+            </operation>
+    <operation name="update-payment-request" >
+                <parameters>
+                            <parameter name="update-payment-request-request-data" type="update-payment-request-request-type" use="REQUIRED" role="PRIMARY" />
+                                </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/paymentrequest" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-payment-request-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                        </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="update-payment-request-response-type" />
+            </operation>
+    <operation name="get-payment-request" >
+                <parameters>
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="Payment Request ID."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/paymentrequest/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-payment-request-response-type" />
+            </operation>
+    <operation name="get-payment-request-digests" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The start of the page offset."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of records to return (default 1000)."/>
+                            <parameter name="approval-status"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="A code representing a Payment Request Approval Status. Use GET /invoice/localizeddata to get the available approval status codes."/>
+                            <parameter name="payment-status"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="A code representing a Payment Request Payment Status. Use GET /invoice/localizeddata to get the available payment status codes"/>
+                            <parameter name="vendor-invoice-number"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Vendor invoice number tied to invoice."/>
+                            <parameter name="create-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The payment request create date is before this date.Format: YYYY-MM-DD."/>
+                            <parameter name="create-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The payment request create date is after this date.Format: YYYY-MM-DD."/>
+                            <parameter name="user-defined-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The payment request user defined date is before this date.Format: YYYY-MM-DD."/>
+                            <parameter name="user-defined-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The payment request user defined date is after this date.Format: YYYY-MM-DD."/>
+                            <parameter name="submit-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The payment request submit date is before this date.Format: YYYY-MM-DD."/>
+                            <parameter name="submit-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The payment request submit date is after this date.Format: YYYY-MM-DD."/>
+                            <parameter name="paid-date-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The payment request paid date is before this date.Format: YYYY-MM-DD."/>
+                            <parameter name="paid-date-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="The payment request paid date is after this date.Format: YYYY-MM-DD."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/paymentrequestdigests" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'],'approvalStatus': vars['approval-status'],'paymentStatus': vars['payment-status'],'vendorInvoiceNumber': vars['vendor-invoice-number'],'createDateBefore': vars['create-date-before'],'createDateAfter': vars['create-date-after'],'userDefinedDateBefore': vars['user-defined-date-before'],'userDefinedDateAfter': vars['user-defined-date-after'],'submitDateBefore': vars['submit-date-before'],'submitDateAfter': vars['submit-date-after'],'paidDateBefore': vars['paid-date-before'],'paidDateAfter': vars['paid-date-after'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-payment-request-digests-response-type" />
+            </operation>
+    <operation name="get-payment-request-digest" >
+                <parameters>
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The payment request ID"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/paymentrequestdigests/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-payment-request-digest-response-type" />
+            </operation>
+    <operation name="create-purchase-order" >
+                <parameters>
+                            <parameter name="create-purchase-order-request-data" type="create-purchase-order-request-type" use="REQUIRED" role="PRIMARY" />
+                                </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/purchaseorders" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-purchase-order-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                        </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-purchase-order-response-type" />
+            </operation>
+    <operation name="update-purchase-order" >
+                <parameters>
+                            <parameter name="update-purchase-order-request-data" type="update-purchase-order-request-type" use="REQUIRED" role="PRIMARY" />
+                                </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/purchaseorders" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-purchase-order-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                        </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="update-purchase-order-response-type" />
+            </operation>
+    <operation name="get-purchase-order" >
+                <parameters>
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The identifier for the purchase order."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/purchaseorders/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-purchase-order-response-type" />
+            </operation>
+    <operation name="get-invoices" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The starting point of the next set of results, after the limit specified in the limit field has been reached."/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The number of invoices to retrieve. Maximum value: 1000"/>
+                            <parameter name="modifiedafter"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="A parameter that can be used to limit the results to invoices modified after the specified date."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/salestaxvalidationrequest" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'],'modifiedafter': vars['modifiedafter'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-invoices-response-type" />
+            </operation>
+    <operation name="update-invoices" >
+                <parameters>
+                            <parameter name="update-invoices-request-data" type="update-invoices-request-type" use="REQUIRED" role="PRIMARY" />
+                                </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/salestaxvalidationrequest" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-invoices-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                        </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="update-invoices-response-type" />
+            </operation>
+    <operation name="get-vendors" >
+                <parameters>
+                                        <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="The maximum number of items to be returned in a  response. The default is 25 and cannot exceed 1000."/>
+                            <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Specifies the starting point for the next query when iterating through the collection response.  Use with paged collections of resources."/>
+                            <parameter name="sort-direction"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="ascending or descending, The default value will be ascending."/>
+                            <parameter name="sort-by"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Field you need to the results to be sorted by. Vendor Name will be made default if no value is sent. Only fields that are added to the vendor form can be used here. Fields have to be specified by name as specified in Doc."/>
+                            <parameter name="search-type"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Valid Options - exact, begins, contains and ends - Applies for the entire given search parameters. The default value if not sent is exact."/>
+                            <parameter name="vendor-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Vendor Code to be searched"/>
+                            <parameter name="vendor-name"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Vendor Name to be searched"/>
+                            <parameter name="tax-id"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Tax ID to be searched"/>
+                            <parameter name="buyer-account-number"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Buyer Account Number to be searched"/>
+                            <parameter name="address-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Address Code to be searched"/>
+                            <parameter name="address1"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Address 1 to be searched"/>
+                            <parameter name="address2"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Address 2 to be searched"/>
+                            <parameter name="address3"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Address 3 to be searched"/>
+                            <parameter name="city"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="City to be searched"/>
+                            <parameter name="state"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="State to be searched"/>
+                            <parameter name="postal-code"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Postal Code to be searched"/>
+                            <parameter name="approved"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Find Approved/Un Approved Vendors , True/False"/>
+                            <parameter name="country"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Country to be searched"/>
+                            <parameter name="custom1"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 1 to be searched"/>
+                            <parameter name="custom2"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 2 to be searched"/>
+                            <parameter name="custom3"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 3 to be searched"/>
+                            <parameter name="custom4"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 4 to be searched"/>
+                            <parameter name="custom5"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 5 to be searched"/>
+                            <parameter name="custom6"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 6 to be searched"/>
+                            <parameter name="custom7"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 7 to be searched"/>
+                            <parameter name="custom8"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 8 to be searched"/>
+                            <parameter name="custom9"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 9 to be searched"/>
+                            <parameter name="custom10"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 10 to be searched"/>
+                            <parameter name="custom11"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 11 to be searched"/>
+                            <parameter name="custom12"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 12 to be searched"/>
+                            <parameter name="custom13"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 13 to be searched"/>
+                            <parameter name="custom14"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 14 to be searched"/>
+                            <parameter name="custom15"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 15 to be searched"/>
+                            <parameter name="custom16"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 16 to be searched"/>
+                            <parameter name="custom17"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 17 to be searched"/>
+                            <parameter name="custom18"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 18 to be searched"/>
+                            <parameter name="custom19"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 19 to be searched"/>
+                            <parameter name="custom20"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Custom 20 to be searched"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/vendors" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'limit': vars['limit'],'offset': vars['offset'],'sortDirection': vars['sort-direction'],'sortBy': vars['sort-by'],'searchType': vars['search-type'],'vendorCode': vars['vendor-code'],'vendorName': vars['vendor-name'],'taxID': vars['tax-id'],'buyerAccountNumber': vars['buyer-account-number'],'addressCode': vars['address-code'],'address1': vars['address1'],'address2': vars['address2'],'address3': vars['address3'],'city': vars['city'],'state': vars['state'],'postalCode': vars['postal-code'],'approved': vars['approved'],'country': vars['country'],'custom1': vars['custom1'],'custom2': vars['custom2'],'custom3': vars['custom3'],'custom4': vars['custom4'],'custom5': vars['custom5'],'custom6': vars['custom6'],'custom7': vars['custom7'],'custom8': vars['custom8'],'custom9': vars['custom9'],'custom10': vars['custom10'],'custom11': vars['custom11'],'custom12': vars['custom12'],'custom13': vars['custom13'],'custom14': vars['custom14'],'custom15': vars['custom15'],'custom16': vars['custom16'],'custom17': vars['custom17'],'custom18': vars['custom18'],'custom19': vars['custom19'],'custom20': vars['custom20'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-vendors-response-type" />
+            </operation>
+    <operation name="create-vendors" >
+                <parameters>
+                            <parameter name="create-vendors-request-data" type="create-vendors-request-type" use="REQUIRED" role="PRIMARY" />
+                                </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/vendors" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-vendors-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                        </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-vendors-response-type" />
+            </operation>
+    <operation name="update-vendors" >
+                <parameters>
+                            <parameter name="update-vendors-request-data" type="update-vendors-request-type" use="REQUIRED" role="PRIMARY" />
+                                </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/vendors" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-vendors-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                        </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="update-vendors-response-type" />
+            </operation>
+    <operation name="delete-vendor" >
+                <parameters>
+                                        <parameter name="vendor-code"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="Vendor Code to be deleted"/>
+                            <parameter name="address-code"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="Address Code to be deleted"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.0/invoice/vendors" method="DELETE" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'vendorCode': vars['vendor-code'],'addressCode': vars['address-code'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="delete-vendor-response-type" />
+            </operation>
+    <operation name="get-requests" >
+                <parameters>
+                                        <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Starting page offset"/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="Number of records to return (default 100)"/>
+                            <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user who owns this Request. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="status"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The Status search term specifies which travel request or approval status to return. If no Status value is sent, the default Status of Active will be used."/>
+                            <parameter name="modified-after"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="This returns travel requests in which the associated dependents (header, entries, segments, allocations, attendees, comments ) were modified after the specified date and time. This search term can be used along with other search terms to narrow the results. The date and time (if desired) should be in UTC. The format is: YYYY-MM-DDThh:mm:ss."/>
+                            <parameter name="modified-before"
+                    type="date"
+                                        use="OPTIONAL"                    doc:description="This returns travel requests in which the associated dependents (header, entries, segments, allocations, attendees, comments ) were modified before the specified date and time.This search term can be used along with other search terms to narrow the results. The date and time (if desired) should be in UTC. The format is: YYYY-MM-DDThh:mm:ss."/>
+                            <parameter name="with-segment-types"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Pass true to populate the SegmentType field in the result."/>
+                            <parameter name="with-user-permissions"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Pass true to get the UserPermssions in the result."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.1/travelrequest/requests" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'offset': vars['offset'],'limit': vars['limit'],'user': vars['user'],'status': vars['status'],'modifiedAfter': vars['modified-after'],'modifiedBefore': vars['modified-before'],'withSegmentTypes': vars['with-segment-types'],'withUserPermissions': vars['with-user-permissions'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-requests-response-type" />
+            </operation>
+    <operation name="create-request" >
+                <parameters>
+                            <parameter name="create-request-request-data" type="create-request-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="do-submit"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Trigger a submit action upon a successfull save operation"/>
+                            <parameter name="force-submit"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Force the submit operation even if non-blocking functional exceptions were to be raised on request creation or update operation."/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.1/travelrequest/requests" method="POST" >
+                                    <http:body>
+                        #[output application/json --- vars['create-request-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'],'doSubmit': vars['do-submit'],'forceSubmit': vars['force-submit'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="create-request-response-type" />
+            </operation>
+    <operation name="get-request" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The Request ID"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.1/travelrequest/requests/{id}" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-request-response-type" />
+            </operation>
+    <operation name="update-request" >
+                <parameters>
+                            <parameter name="update-request-request-data" type="update-request-request-type" use="REQUIRED" role="PRIMARY" />
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="do-submit"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Trigger a submit action upon a successfull save operation"/>
+                            <parameter name="force-submit"
+                    type="boolean"
+                                        use="OPTIONAL"                    doc:description="Force the submit operation even if non-blocking functional exceptions were to be raised on request creation or update operation."/>
+                            <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The Request ID"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.1/travelrequest/requests/{id}" method="PUT" >
+                                    <http:body>
+                        #[output application/json --- vars['update-request-request-data']]
+                    </http:body>
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'],'doSubmit': vars['do-submit'],'forceSubmit': vars['force-submit'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="update-request-response-type" />
+            </operation>
+    <operation name="recall-request" >
+                <parameters>
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The Request ID"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.1/travelrequest/requests/{id}/recall" method="POST" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="submit-request" >
+                <parameters>
+                                        <parameter name="id"
+                    type="string"
+                                        use="REQUIRED"                    doc:description="The Request ID"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.1/travelrequest/requests/{id}/submit" method="POST" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                <http:uri-params>
+                            <![CDATA[#[ { 'id': vars['id'] } filterObject $ != null ]]]>
+                        </http:uri-params>
+                                                                    </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="string" />
+            </operation>
+    <operation name="get-request-group-configurations" >
+                <parameters>
+                                        <parameter name="user"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="The login ID of the user. Optional. The user must have the Web Services Admin (Professional) or Can Administer (Standard) user role to use this parameter."/>
+                            <parameter name="offset"
+                    type="string"
+                                        use="OPTIONAL"                    doc:description="Starting page offset"/>
+                            <parameter name="limit"
+                    type="number"
+                                        use="OPTIONAL"                    doc:description="Determines the number of records to return (default 10)"/>
+                    </parameters>
+                <body>
+            <http:request config-ref="mule-sap-concur-connector-httpreq-config" path="/v3.1/travelrequest/requestgroupconfigurations" method="GET" >
+                
+                                                            <http:headers>
+                            <![CDATA[#[ { 'Accept': 'application/json','Authorization': vars['property_authorization'] } filterObject $ != null ]]]>
+                        </http:headers>
+                                                                                    <http:query-params>
+                            <![CDATA[#[ { 'user': vars['user'],'offset': vars['offset'],'limit': vars['limit'] } filterObject $ != null ]]]>
+                        </http:query-params>
+                                                </http:request>
+            <mule:set-payload value="#[payload]" mimeType="application/json" />        </body>
+                    <output type="get-request-group-configurations-response-type" />
+            </operation>
+
+</module>

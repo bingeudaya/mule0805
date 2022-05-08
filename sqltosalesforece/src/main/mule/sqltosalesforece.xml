@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="288b8e1b-3fdf-40ac-8cce-d02d9241545c" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="b8152fea-9f1a-40a2-ac89-0d0ffa7dd716" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="6d603e92-98b4-4008-b2bc-5af3f30f0145" >
+		<db:data-source-connection />
+	</db:config>
+	<http:listener-config name="HTTP_Listener_config2" doc:name="HTTP Listener config" doc:id="fa26311f-a7c1-4e8d-be2e-09180122f2c1" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config1" doc:name="Database Config" doc:id="238cb4ba-3ed2-4f25-817f-b4937c65ae5a" >
+		<db:mssql-connection host="P7MRNILL" port="1433" user="mule5000" password="Passw0rd" databaseName="mulesoft5000" />
+	</db:config>
+	<db:config name="Database_Config2" doc:name="Database Config" doc:id="a09a33aa-f66e-41b0-923a-89234841476e" >
+		<db:mssql-connection host="LAPTOP-P7MRNILL" port="1433" user="mule5000" password="Passw0rd" databaseName="mulesoft5000" />
+	</db:config>
+	<flow name="sqltosalesforeceFlow" doc:id="6121b385-5ac7-46ce-ae8c-d02d1aa1f476" >
+		<http:listener doc:name="Listener" doc:id="3c9e0289-cabb-4a1c-9571-6746c59b508a" config-ref="HTTP_Listener_config2" path="/data"/>
+		<db:select doc:name="Select" doc:id="2f752648-def1-4033-984c-9c01bfd23a5c" config-ref="Database_Config2">
+			<db:sql ><![CDATA[select * from emp]]></db:sql>
+			<db:input-parameters ><![CDATA[{
+ "eno":payload.eno,
+ "ename":payload.ename,
+ "sal":payload.sal
+ }]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="520fdea2-e831-4787-8c70-920b01ea8ca1" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

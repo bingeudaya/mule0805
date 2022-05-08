@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f01e464e-4a3a-4a46-a0f7-5436b4dd99f9" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="file_readFlow" doc:id="6c1e182f-6eaa-4555-8689-1d3e4592b914" >
+		<http:listener doc:name="Listener" doc:id="34861c0f-ee72-4cbf-8733-6ce46a5636d5" config-ref="HTTP_Listener_config" path="/read"/>
+		<file:create-directory doc:name="Create directory" doc:id="2e73b070-81bf-4e7e-9810-f776aae88491" directoryPath="D:\mulesoft5000"/>
+		<logger level="INFO" doc:name="Logger" doc:id="603d806f-9020-4cf0-ad6c-6c80f66f3295" message="File Is Created"/>
+	</flow>
+</mule>

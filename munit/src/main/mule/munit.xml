@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="b0131ab6-2f62-49d9-9101-61f796727be9" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="88ab0a79-4a5a-4442-b36f-a66a99d9053d" >
+		<http:request-connection protocol="HTTPS" host="jsonplaceholder.typicode.com" port="443" />
+	</http:request-config>
+	<flow name="munitFlow" doc:id="b503ff1b-bfcc-4af8-9e85-4c4ab5886fc4" >
+		<http:listener doc:name="Listener" doc:id="b47f7ef8-9a2c-4d37-98d3-360c1e3916b7" config-ref="HTTP_Listener_config" path="/munit"/>
+		<http:request method="GET" doc:name="Request" doc:id="7266255a-0d79-44ab-ac1d-e464efafa460" config-ref="HTTP_Request_configuration" path="/users">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	id : attributes.queryParams.id
+}]]]></http:query-params>
+		</http:request>
+		<choice doc:name="Choice" doc:id="8ec01f2d-e472-4675-a36b-5680d715009b" >
+			<when expression="sizeOf(payload) &gt;0">
+				<ee:transform doc:name="Transform Message" doc:id="a528f1a2-5c6d-45af-b100-da2fd22a024d" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise >
+				<ee:transform doc:name="Transform Message" doc:id="63802b23-45d8-4c2b-90ae-9c4cf30d553c" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+	"messge":"No Data Please contact system adminstrator"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
+	</flow>
+</mule>

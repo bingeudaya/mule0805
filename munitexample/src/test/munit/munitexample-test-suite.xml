@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="munitexample-test-suite.xml" />
+	<munit:test name="munitexample-test-suite-munitexampleFlowTest" doc:id="7e41f447-48a9-49bb-b861-59bda59b6583" description="Test">
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="e93a8fff-c61f-40dd-a7ab-52d79f690345" >
+				<munit:attributes value='#[{queryParams:{username:"testuser",password:"test"}}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to munitexampleFlow" doc:id="7597cda9-3efe-4fea-bb4e-a8c8f82a60fd" name="munitexampleFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-equals doc:name="Assert equals" doc:id="f3b6905c-9f21-4aac-a17c-cc9bd4ce188c" actual='#[payload."output"]' expected='#["your gmail detailstestusertest"]'/>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="munitexample-test-suiteTest" doc:id="116efd3e-076a-4354-8906-38e90da75c08" >
+		<munit:execution >
+			<munit:set-event doc:name="Set Event" doc:id="e96d3931-f61b-4c63-a76c-7b56c570610f" >
+				<munit:attributes value='#[{queryParams:{username:"testuser",password:"test"}}]' />
+			</munit:set-event>
+			<flow-ref doc:name="Flow Reference" doc:id="6bddb49d-4070-4204-bc18-0b7404f4e563" name="munitexampleFlow"/>
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="0157e5b2-ab9d-4366-a6cf-ae27311796c2" is='#[MunitTools::equalTo("your gmail detailstestusertest")]'/>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

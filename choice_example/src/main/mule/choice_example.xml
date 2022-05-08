@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="52091e57-1a7d-4807-9a98-ef725bd94ca5" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="choice_exampleFlow" doc:id="4f852297-5dee-4c7e-88b0-48afe3d39532" >
+		<http:listener doc:name="Listener" doc:id="0407f8ff-eee2-4f72-8861-14b5e03fcc3b" config-ref="HTTP_Listener_config" path="/choice"/>
+		<choice doc:name="Choice" doc:id="ae1eb790-775b-4e43-95ef-4dae7eb5ca39" >
+			<when expression="#[attributes.queryParams.Grade=='A']">
+				<set-payload value="First class" doc:name="Set Payload" doc:id="66cc17ff-3dff-4288-b828-4207aea776a1" />
+			</when>
+			<when expression="#[attributes.queryParams.Grade=='B']">
+				<set-payload value="SecondClass" doc:name="Set Payload" doc:id="0c866a2e-a209-43b1-a0e2-c21987f338d7" />
+			</when>
+			<when expression="#[attributes.queryParams.Grade=='C']">
+				<set-payload value="ThirdClass" doc:name="Set Payload" doc:id="b1b54dfb-15ab-4397-95f0-f56c344c53ca" />
+			</when>
+			<otherwise >
+				<set-payload value="Fail" doc:name="Set Payload" doc:id="8758f7e1-d1fc-4727-9235-39605c732cbe" />
+			</otherwise>
+		</choice>
+	</flow>
+</mule>

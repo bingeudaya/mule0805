@@ -1,0 +1,18 @@
+#%RAML 1.0
+title: employform
+version: 1.0
+baseUri: http://localhost:8081/employ
+protocols:
+  - HTTP
+/employdetails:
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                "eno":"250",
+                "ename":"Ragahvendra"
+              }
+          

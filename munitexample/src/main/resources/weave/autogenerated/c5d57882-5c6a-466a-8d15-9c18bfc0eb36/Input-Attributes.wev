@@ -1,0 +1,9 @@
+%dw 2.0
+
+type auto_c5d57882_5c6a_466a_8d15_9c18bfc0eb36_Input_Attributes = {|
+  queryParams: {|
+    username: String, 
+    password: String
+  |}
+|}
+

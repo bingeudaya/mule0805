@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6e6d858c-1e65-453b-80aa-f06baf7eeb9a" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="da8e00cb-1ec4-475f-9d0b-1e02e91375c7" >
+		<db:mssql-connection host="LAPTOP-P7MRNILL" port="1433" user="mule7000" password="Passw0rd" databaseName="mulesoft8000" />
+	</db:config>
+	<flow name="filedatabaseFlow" doc:id="36a0a06c-bdf3-41f2-867d-23637508beae" >
+		<http:listener doc:name="Listener" doc:id="f6a53dec-727b-4f34-94c5-e9a0818d99ce" config-ref="HTTP_Listener_config" path="/fileread"/>
+		<file:read doc:name="Read" doc:id="b99e12a4-522f-42ad-a648-6f69e8e6a654" path="D:\csv\empdata New.csv"/>
+		<ee:transform doc:name="Transform Message" doc:id="05d42924-0512-4a99-9c95-00c70e74c888" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+
+payload map(item,index)->
+{
+	FID:item.FID,
+	country:item.country,
+	state:item.state,
+	distic:item.distic
+	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:bulk-insert doc:name="Bulk insert" doc:id="6bc968fd-da90-421c-a27d-d6cee18f7b4d" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into employinfo(FID,country,state,distic) VALUES (:FID,:country,:state,:distic)]]></db:sql>
+		</db:bulk-insert>
+		<ee:transform doc:name="Transform Message" doc:id="7117a743-8bf4-49f5-9d53-d7227a3591dd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"Data saved Sucssfully"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

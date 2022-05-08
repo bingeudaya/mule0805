@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f839ff1f-d68e-4aa8-bebc-58eab24f2845" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="db3a5d41-823b-47d9-8da7-8f51907c51fd" >
+		<salesforce:basic-connection username="today2402@tc.com" password="Passw0rd" securityToken="VLERlFCmFc6SHRuJyIOQt10Yh" />
+	</salesforce:sfdc-config>
+	<flow name="upsert_accountFlow" doc:id="eb53556e-bf5c-4da5-a64f-7b177b6d9cec" >
+		<http:listener doc:name="Listener" doc:id="d30321aa-415e-47d1-a001-7604efacf7e7" config-ref="HTTP_Listener_config" path="/salesfoece"/>
+		<ee:transform doc:name="Transform Message" doc:id="5d34c3a4-d284-4713-aa7e-024961affff2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+[{
+	LastName: payload.ln,
+	FirstName: payload.fn,
+	Phone: payload.phone,
+	Email: payload.email
+}]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:upsert doc:name="Upsert" doc:id="dfe657cc-09f0-47fb-b5d0-dddcb34ec54b" config-ref="Salesforce_Config" objectType="Contact" externalIdFieldName="Email"/>
+		<ee:transform doc:name="Transform Message" doc:id="a9cc89d8-f841-4a38-a4b1-32e7389294a4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:s3="http://www.mulesoft.org/schema/mule/s3"
+	xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4de6b680-b182-4579-bc81-dc2dab101be1" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<sftp:config name="SFTP_Config" doc:name="SFTP Config" doc:id="f0322efc-1e27-4ed7-ac6f-9abd5ee812eb" >
+		<sftp:connection host="test.rebex.net" username="demo" password="password" />
+	</sftp:config>
+	<s3:config name="Amazon_S3_Configuration" doc:name="Amazon S3 Configuration" doc:id="cbd41281-7f50-4dbe-af9c-ab2f74c9f06d" >
+		<s3:basic-connection accessKey="AKIA3KKELEXZZ3EVWRFT" secretKey="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" />
+	</s3:config>
+	<s3:config name="Amazon_S3_Configuration1" doc:name="Amazon S3 Configuration" doc:id="57da5bc5-1645-4510-a6a8-a0c86478d0e1" >
+		<s3:basic-connection accessKey="AKIA3KKELEXZZ3EVWRFT" secretKey="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" />
+	</s3:config>
+	<flow name="sftpawsFlow" doc:id="94ef2ecf-9e0d-4a08-b7cc-4cde86bdc2fa" >
+		<http:listener doc:name="Listener" doc:id="89958e4c-8fe2-484d-88e4-a3eb570e205f" config-ref="HTTP_Listener_config" path="/aws"/>
+		<sftp:read doc:name="Read" doc:id="9a470a6f-c9f1-4e86-9780-72291f48bd66" config-ref="SFTP_Config" path="/pub/example/KeyGenerator.png"/>
+		<logger level="INFO" doc:name="Logger" doc:id="78156c41-18b4-476f-a53a-f384b063f19b" message="#[payload]"/>
+		<s3:create-bucket doc:name="Create bucket" doc:id="7458e603-927f-44d7-a162-b6c14632d465" config-ref="Amazon_S3_Configuration1" bucketName='test' region="us-east-2" acl="BUCKET_OWNER_FULL_CONTROL"/>
+		<s3:create-object doc:name="Create object" doc:id="b653ac2d-e6a7-4ceb-8fd9-c4ffafcf4f37" config-ref="Amazon_S3_Configuration" bucketName="mule5000" key="KeyGenerator.png"/>
+		<ee:transform doc:name="Transform Message" doc:id="c7b5d402-04c7-47dd-a8d9-729f4b835bac" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"File Uploaded In aws Server"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

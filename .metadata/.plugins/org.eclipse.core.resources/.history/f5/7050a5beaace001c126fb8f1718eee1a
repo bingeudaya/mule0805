@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking"
+	xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="14247889-b560-486d-9f13-215058e188ef" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<os:object-store name="json" doc:name="Object store" doc:id="bf1cc57d-660d-4197-9ef8-35bf296bd543" maxEntries="10" entryTtl="5" entryTtlUnit="HOURS" />
+	<http:listener-config name="HTTP_Listener_config1" doc:name="HTTP Listener config" doc:id="982f12c0-442b-477d-bd29-8775eb899037" >
+		<http:listener-connection host="localhost" port="8082" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config2" doc:name="HTTP Listener config" doc:id="f9a59422-220f-46fa-9d80-5d4c104cecdb" >
+		<http:listener-connection host="localhost" port="8083" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config3" doc:name="HTTP Listener config" doc:id="36ddb6ff-bd0e-46af-8ced-21abc414fe5f" >
+		<http:listener-connection host="localhost" port="8084" />
+	</http:listener-config>
+	<http:listener-config name="HTTP_Listener_config4" doc:name="HTTP Listener config" doc:id="234bd131-cb59-419e-814f-12cc01f09810" >
+		<http:listener-connection host="localhost" port="1234" />
+	</http:listener-config>
+	<flow name="object_stroreFlow" doc:id="491590d0-c544-40b7-b715-1e4886f078b6" >
+		<http:listener doc:name="Listener" doc:id="b910f6ea-a20e-41f5-a723-3ff368ff5c0a" config-ref="HTTP_Listener_config" path="/store" outputMimeType="application/json"/>
+		<os:store doc:name="Store" doc:id="b58677ae-b04f-42e8-a8b1-3907f0bdcffe" key='#[now() as String {format:"yyyyMMddHHMMSS"}]' objectStore="json"/>
+	</flow>
+	<flow name="object_stroreFlow1" doc:id="9831ab97-5d4b-4c4c-97ea-85258448dd8d" >
+		<http:listener doc:name="Listener" doc:id="73cb9954-72c3-4872-8ff1-ed2740efddca" config-ref="HTTP_Listener_config1" path="/ra" outputMimeType="application/json"/>
+		<os:retrieve-all doc:name="Retrieve all" doc:id="4155e797-1a00-42cf-9c6a-bf0901bf63c0" objectStore="json"/>
+		<ee:transform doc:name="Transform Message" doc:id="cb6f1da6-d475-42fc-954d-eca3a4108eed" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="object_stroreFlow4" doc:id="c666d473-cec6-4c78-9410-f04d7e7a1c31" >
+		<http:listener doc:name="Listener" doc:id="ca3e2e03-b8d5-4d04-83ce-954294f72294" config-ref="HTTP_Listener_config4" path="/retrive"/>
+		<os:retrieve-all-keys doc:name="Retrieve all keys" doc:id="2ab71583-f250-4762-ab5b-845782c2a86b" objectStore="json"/>
+		<ee:transform doc:name="Transform Message" doc:id="a1b554e8-1e22-48b1-bd01-e8e6c0b7214b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="object_stroreFlow2" doc:id="6233acbe-a8f7-47d7-bafb-845797105d6e" >
+		<http:listener doc:name="Listener" doc:id="72dbb2c5-ae7a-4919-8c6e-a9fa506d18d2" config-ref="HTTP_Listener_config2" path="/rak"/>
+		<os:retrieve-all-keys doc:name="Retrieve all keys" doc:id="e831bdf5-37b8-41c6-b1ba-bd65f8589068" objectStore="json"/>
+		<foreach doc:name="For Each" doc:id="6255c9a9-2810-4a0b-8b66-1c8c8057d214" >
+			<set-variable value="#[payload]" doc:name="Set Variable" doc:id="50b0aaee-d79a-437a-a772-1f8a8ebf1103" variableName="key"/>
+			<ee:transform doc:name="Transform Message" doc:id="24af0c32-ca67-4418-986c-dda15fc34ba5" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<logger level="INFO" doc:name="Logger" doc:id="4190d901-a213-4fa9-ba53-9de6e0c39b27" message="#[payload]"/>
+		</foreach>
+	</flow>
+	<flow name="object_stroreFlow3" doc:id="e60dddbd-6d7f-4aef-9050-bbe186ba9345" >
+		<http:listener doc:name="Listener" doc:id="7adb9a59-5cea-4e3a-8176-df3cbbb60a31" config-ref="HTTP_Listener_config3" path="/clear"/>
+		<os:clear doc:name="Clear" doc:id="92f77015-88a6-4e57-a459-d3afac902e4b" objectStore="json"/>
+	</flow>
+</mule>

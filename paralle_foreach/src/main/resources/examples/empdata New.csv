@@ -1,0 +1,595 @@
+FID,country,state,distic
+1,India,Kerala,fdfdfdfd
+2,India,Kerala,Tumkur
+3,India,Kerala,Udupi
+4,India,Kerala,Andaman Islands
+5,India,Kerala,Uttar Kannand
+6,India,Kerala,Alappuzha
+7,India,Kerala,Nicobar Islands
+8,India,Kerala,Ernakulam
+9,India,Kerala,Adilabad
+10,India,Kerala,Idukki
+11,India,Kerala,Anantapur
+12,India,Kerala,Chittoor
+13,India,Kerala,Kannur
+14,India,Kerala,Cuddapah
+15,India,Kerala,East Godavari
+16,India,Kerala,Kasaragod
+17,India,Kerala,Guntur
+18,India,Kerala,Kollam
+19,India,Kerala,Hyderabad
+20,India,Kerala,Kottayam
+21,India,Kerala,Sivaganga
+22,India,Kerala,Karimnagar
+23,India,Kerala,Kozhikode
+24,India,Kerala,Malappuram
+25,India,Kerala,Khammam
+26,India,Kerala,Thanjavur
+27,India,Kerala,Palakkad
+28,India,Kerala,Theni
+29,India,Kerala,Pattanamtitta
+30,India,Kerala,Krishna
+31,India,Kerala,Thiruvallur
+32,India,Kerala,Kurnool
+33,India,Kerala,Thiruvananthapuram
+34,India,Kerala,Thiruvarur
+35,India,Kerala,Thrissur
+36,India,Kerala,Mahbubnagar
+37,India,Kerala,Wayanad
+38,India,Kerala,Thoothukudi
+39,India,Kerala,Medak
+40,India,Kerala,Kavaratti
+41,India,Kerala,Nalgonda
+42,India,Kerala,Tiruchchirappalli
+43,India,Kerala,Anuppur
+44,India,Kerala,Ashoknagar
+45,India,Kerala,Tirunelveli Kattabo
+46,India,Kerala,Balaghat
+47,India,Kerala,Tiruvannamalai
+48,India,Kerala,Barwani
+49,India,Kerala,Nellore
+50,India,Kerala,Betul
+51,India,Kerala,Nizamabad
+52,India,Kerala,Bhind
+53,India,Kerala,Vellore
+54,India,Kerala,Prakasam
+55,India,Kerala,Bhopal
+56,India,Kerala,Villupuram
+57,India,Kerala,Burhanpur
+58,India,Kerala,Rangareddi
+59,India,Kerala,Virudhunagar
+60,India,Kerala,Chhatarpur
+61,India,Kerala,Dhalai
+62,India,Kerala,Srikakulam
+63,India,Kerala,Chhindwara
+64,India,Kerala,North Tripura
+65,India,Kerala,Damoh
+66,India,Kerala,Datia
+67,India,Kerala,South Tripura
+68,India,Kerala,Vishakhapatnam
+69,India,Kerala,Dewas
+70,India,Kerala,West Tripura
+71,India,Kerala,Vizianagaram
+72,India,Kerala,Dhar
+73,India,Kerala,Warangal
+74,India,Kerala,Agra
+75,India,Kerala,Dindori
+76,India,Kerala,West Godavari
+77,India,Kerala,Aligarh
+78,India,Kerala,East Nimar
+79,India,Kerala,Changlang
+80,India,Kerala,Junagadh
+81,India,Kerala,Allahabad
+82,India,Kerala,Guna
+83,India,Kerala,Ambedkar Nagar
+84,India,Kerala,Delhi
+85,India,Kerala,East Kameng
+86,India,Kerala,Gwalior
+87,India,Kerala,Auraiya
+88,India,Kerala,North Goa
+89,India,Kerala,Harda
+90,India,Kerala,East Siang
+91,India,Kerala,Azamgarh
+92,India,Kerala,Hoshangabad
+93,India,Kerala,Badaun
+94,India,Kerala,Indore
+95,India,Kerala,Kurung Kumey
+96,India,Kerala,South Goa
+97,India,Kerala,Baghpat
+98,India,Kerala,Jabalpur
+99,India,Kerala,Bahraich
+100,India,Kerala,Lohit
+101,India,Kerala,Ahmadabad
+102,India,Kerala,Jhabua
+103,India,Kerala,Ballia
+104,India,Kerala,Balrampur
+105,India,Kerala,Katni
+106,India,Kerala,Lower Dibang Valley
+107,India,Kerala,Amreli
+108,India,Kerala,Banda
+109,India,Kerala,Mandla
+110,India,Kerala,Lower Subansiri
+111,India,Kerala,Mandsaur
+112,India,Kerala,Bara Banki
+113,India,Kerala,Anand
+114,India,Kerala,Papum Pare
+115,India,Kerala,Morena
+116,India,Kerala,Bareilly
+117,India,Kerala,Banas Kantha
+118,India,Kerala,Tawang
+119,India,Kerala,Narsinghpur
+120,India,Kerala,Basti
+121,India,Kerala,Neemuch
+122,India,Kerala,Tirap
+123,India,Kerala,Bijnor
+124,India,Kerala,Panna
+125,India,Kerala,Upper Dibang Valley
+126,India,Kerala,Bharuch
+127,India,Kerala,Bulandshahr
+128,India,Kerala,Raisen
+129,India,Kerala,Upper Siang
+130,India,Kerala,Bhavnagar
+131,India,Kerala,Chandauli
+132,India,Kerala,Rajgarh
+133,India,Kerala,Upper Subansiri
+134,India,Kerala,West Kameng
+135,India,Kerala,Ratlam
+136,India,Kerala,Chitrakoot
+137,India,Kerala,Dahod
+138,India,Kerala,Deoria
+139,India,Kerala,Rewa
+140,India,Kerala,West Siang
+141,India,Kerala,Gandhinagar
+142,India,Kerala,Etah
+143,India,Kerala,Etawah
+144,India,Kerala,Sagar
+145,India,Kerala,Barpeta
+146,India,Kerala,Kolasib
+147,India,Kerala,Satna
+148,India,Kerala,Bongaigaon
+149,India,Kerala,Faizabad
+150,India,Kerala,Lawngtlai
+151,India,Kerala,Lunglei
+152,India,Kerala,Sehore
+153,India,Kerala,Farrukhabad
+154,India,Kerala,Cachar
+155,India,Kerala,Jamnagar
+156,India,Kerala,Mamit
+157,India,Kerala,Darrang
+158,India,Kerala,Seoni
+159,India,Kerala,Fatehpur
+160,India,Kerala,Junagadh
+161,India,Kerala,Dhemaji
+162,India,Kerala,Shahdol
+163,India,Kerala,Saiha
+164,India,Kerala,Dhuburi
+165,India,Kerala,Serchhip
+166,India,Kerala,Shajapur
+167,India,Kerala,Firozabad
+168,India,Kerala,Dibrugarh
+169,India,Kerala,Gautam Buddha Nagar
+170,India,Kerala,Dimapur
+171,India,Kerala,Sheopur
+172,India,Kerala,Ghaziabad
+173,India,Kerala,Goalpara
+174,India,Kerala,Ghazipur
+175,India,Kerala,Kohima
+176,India,Kerala,Shivpuri
+177,India,Kerala,Golaghat
+178,India,Kerala,Gonda
+179,India,Kerala,Sidhi
+180,India,Kerala,Hailakandi
+181,India,Kerala,Mokokchung
+182,India,Kerala,Gorakhpur
+183,India,Kerala,Tikamgarh
+184,India,Kerala,Jorhat
+185,India,Kerala,Ujjain
+186,India,Kerala,Umaria
+187,India,Kerala,Mon
+188,India,Kerala,Hamirpur
+189,India,Kerala,Vidisha
+190,India,Kerala,Hardoi
+191,India,Kerala,Phek
+192,India,Kerala,Kamrup
+193,India,Kerala,Hathras
+194,India,Kerala,West Nimar
+195,India,Kerala,Jalaun
+196,India,Kerala,Karbi Anglong
+197,India,Kerala,Tuensang
+198,India,Kerala,Ahmednagar
+199,India,Kerala,Jaunpur
+200,India,Kerala,Kachchh
+201,India,Kerala,Karimganj
+202,India,Kerala,Jhansi
+203,India,Kerala,Akola
+204,India,Kerala,Jyotiba Phule Nagar
+205,India,Kerala,Kheda
+206,India,Kerala,Kokrajhar
+207,India,Kerala,Wokha
+208,India,Kerala,Amravati
+209,India,Kerala,Kannauj
+210,India,Kerala,Zunheboto
+211,India,Kerala,Kanpur Dehat
+212,India,Kerala,Aurangabad
+213,India,Kerala,Lakhimpur
+214,India,Kerala,Mahesana
+215,India,Kerala,Kanpur
+216,India,Kerala,Narmada
+217,India,Kerala,Marigaon
+218,India,Kerala,Angul
+219,India,Kerala,Bhandara
+220,India,Kerala,Kaushambi
+221,India,Kerala,Navsari
+222,India,Kerala,Kushinagar
+223,India,Kerala,Baleshwar
+224,India,Kerala,Nagaon
+225,India,Kerala,Bid
+226,India,Kerala,Baragarh
+227,India,Kerala,Panch Mahals
+228,India,Kerala,Lakhimpur Kheri
+229,India,Kerala,Nalbari
+230,India,Kerala,Buldana
+231,India,Kerala,Patan
+232,India,Kerala,Lalitpur
+233,India,Kerala,Bhadrak
+234,India,Kerala,Chandrapur
+235,India,Kerala,North Cachar Hills
+236,India,Kerala,Lucknow
+237,India,Kerala,Porbandar
+238,India,Kerala,Sibsagar
+239,India,Kerala,Bolangir
+240,India,Kerala,Dhule
+241,India,Kerala,Maharajganj
+242,India,Kerala,Boudh
+243,India,Kerala,Rajkot
+244,India,Kerala,Mahoba
+245,India,Kerala,Sonitpur
+246,India,Kerala,Garhchiroli
+247,India,Kerala,Cuttack
+248,India,Kerala,Mainpuri
+249,India,Kerala,Gondiya
+250,India,Kerala,Tinsukia
+251,India,Kerala,Sabar Kantha
+252,India,Kerala,Deogarh
+253,India,Kerala,Mathura
+254,India,Kerala,Araria
+255,India,Kerala,Dhenkanal
+256,India,Kerala,Surat
+257,India,Kerala,Greater Bombay
+258,India,Kerala,Aurangabad
+259,India,Kerala,Gajapati
+260,India,Kerala,Mau
+261,India,Kerala,Meerut
+262,India,Kerala,Banka
+263,India,Kerala,Hingoli
+264,India,Kerala,Ganjam
+265,India,Kerala,Surendranagar
+266,India,Kerala,Mirzapur
+267,India,Kerala,Jalgaon
+268,India,Kerala,Begusarai
+269,India,Kerala,Jagatsinghpur
+270,India,Kerala,Jalna
+271,India,Kerala,Jajpur
+272,India,Kerala,Moradabad
+273,India,Kerala,Bhabua
+274,India,Kerala,The Dangs
+275,India,Kerala,Kolhapur
+276,India,Kerala,Jharsuguda
+277,India,Kerala,Kalahandi
+278,India,Kerala,Muzaffarnagar
+279,India,Kerala,Bhagalpur
+280,India,Kerala,Latur
+281,India,Kerala,Vadodara
+282,India,Kerala,Bhojpur
+283,India,Kerala,Pilibhit
+284,India,Kerala,Kandhamal
+285,India,Kerala,Nagpur
+286,India,Kerala,Valsad
+287,India,Kerala,Buxar
+288,India,Kerala,Nanded
+289,India,Kerala,Kendrapara
+290,India,Kerala,Pratapgarh
+291,India,Kerala,Ambala
+292,India,Kerala,Darbhanga
+293,India,Kerala,Rae Bareli
+294,India,Kerala,Bhiwani
+295,India,Kerala,Gaya
+296,India,Kerala,Keonjhar
+297,India,Kerala,Rampur
+298,India,Kerala,Nandurbar
+299,India,Kerala,Faridabad
+300,India,Kerala,Khordha
+301,India,Kerala,Saharanpur
+302,India,Kerala,Fatehabad
+303,India,Kerala,Nashik
+304,India,Kerala,Koraput
+305,India,Kerala,Gopalganj
+306,India,Kerala,Gurgaon
+307,India,Kerala,Osmanabad
+308,India,Kerala,Sant Kabir Nagar
+309,India,Kerala,Jamui
+310,India,Kerala,Parbhani
+311,India,Kerala,Malkangiri
+312,India,Kerala,Sant Ravi Das Nagar
+313,India,Kerala,Jehanabad
+314,India,Kerala,Pune
+315,India,Kerala,Katihar
+316,India,Kerala,Shahjahanpur
+317,India,Kerala,Hisar
+318,India,Kerala,Shravasti
+319,India,Kerala,Khagaria
+320,India,Kerala,Mayurbhanj
+321,India,Kerala,Jhajjar
+322,India,Kerala,Raigarh
+323,India,Kerala,Kishanganj
+324,India,Kerala,Siddharth Nagar
+325,India,Kerala,Lakhisarai
+326,India,Kerala,Sitapur
+327,India,Kerala,Jind
+328,India,Kerala,Madhepura
+329,India,Kerala,Ratnagiri
+330,India,Kerala,Sonbhadra
+331,India,Kerala,Nabarangpur
+332,India,Kerala,Madhubani
+333,India,Kerala,Nayagarh
+334,India,Kerala,Sultanpur
+335,India,Kerala,Kaithal
+336,India,Kerala,Munger
+337,India,Kerala,Sangli
+338,India,Kerala,Nuapada
+339,India,Kerala,Unnao
+340,India,Kerala,Muzaffarpur
+341,India,Kerala,Karnal
+342,India,Kerala,Satara
+343,India,Kerala,Puri
+344,India,Kerala,Varanasi
+345,India,Kerala,Kurukshetra
+346,India,Kerala,Nalanda
+347,India,Kerala,Almora
+348,India,Kerala,Nawada
+349,India,Kerala,Rayagada
+350,India,Kerala,Bageshwar
+351,India,Kerala,Sindhudurg
+352,India,Kerala,Mahendragarh
+353,India,Kerala,Pashchim Champaran
+354,India,Kerala,Patna
+355,India,Kerala,Panchkula
+356,India,Kerala,Sambalpur
+357,India,Kerala,Chamoli
+358,India,Kerala,Solapur
+359,India,Kerala,Purba Champaran
+360,India,Kerala,Sonepur
+361,India,Kerala,Champawat
+362,India,Kerala,Purnia
+363,India,Kerala,Rohtas
+364,India,Kerala,Dehra Dun
+365,India,Kerala,Panipat
+366,India,Kerala,Saharsa
+367,India,Kerala,Thane
+368,India,Kerala,Sundargarh
+369,India,Kerala,Haridwar
+370,India,Kerala,Samastipur
+371,India,Kerala,Rewari
+372,India,Kerala,Saran
+373,India,Kerala,Wardha
+374,India,Kerala,Naini Tal
+375,India,Kerala,Rohtak
+376,India,Kerala,Sheikhpura
+377,India,Kerala,Washim
+378,India,Kerala,Sheohar
+379,India,Kerala,Karaikal
+380,India,Kerala,Pauri Garhwal
+381,India,Kerala,Sirsa
+382,India,Kerala,Sitamarhi
+383,India,Kerala,Sonepat
+384,India,Kerala,Yavatmal
+385,India,Kerala,Pithoragarh
+386,India,Kerala,Siwan
+387,India,Kerala,Yamuna Nagar
+388,India,Kerala,Supaul
+389,India,Kerala,Mahe
+390,India,Kerala,Bishnupur
+391,India,Kerala,Vaishali
+392,India,Kerala,Bilaspur
+393,India,Kerala,Rudra Prayag
+394,India,Kerala,Chandigarh
+395,India,Kerala,Puducherry
+396,India,Kerala,Chamba
+397,India,Kerala,Bastar
+398,India,Kerala,Chandel
+399,India,Kerala,Tehri Garhwal
+400,India,Kerala,Hamirpur
+401,India,Kerala,Yanam
+402,India,Kerala,Kangra
+403,India,Kerala,Bilaspur
+404,India,Kerala,Amritsar
+405,India,Kerala,Kinnaur
+406,India,Kerala,Dantewada
+407,India,Kerala,Bathinda
+408,India,Kerala,Udham Singh Nagar
+409,India,Kerala,Churachandpur
+410,India,Kerala,Dhamtari
+411,India,Kerala,Faridkot
+412,India,Kerala,Uttarkashi
+413,India,Kerala,East Imphal
+414,India,Kerala,Kullu
+415,India,Kerala,Durg
+416,India,Kerala,Senapati
+417,India,Kerala,Bankura
+418,India,Kerala,Lahul and Spiti
+419,India,Kerala,Fatehgarh Sahib
+420,India,Kerala,Janjgir-Champa
+421,India,Kerala,Tamenglong
+422,India,Kerala,Mandi
+423,India,Kerala,Barddhaman
+424,India,Kerala,Thoubal
+425,India,Kerala,Birbhum
+426,India,Kerala,Shimla
+427,India,Kerala,Jashpur
+428,India,Kerala,Firozpur
+429,India,Kerala,Sirmaur
+430,India,Kerala,Ukhrul
+431,India,Kerala,Dakshin Dinajpur
+432,India,Kerala,Kanker
+433,India,Kerala,Solan
+434,India,Kerala,Gurdaspur
+435,India,Kerala,Darjiling
+436,India,Kerala,West Imphal
+437,India,Kerala,Kawardha
+438,India,Kerala,Una
+439,India,Kerala,Hoshiarpur
+440,India,Kerala,East Garo Hills
+441,India,Kerala,East Midnapore
+442,India,Kerala,Jalandhar
+443,India,Kerala,Anantnag (Kashmir South)
+444,India,Kerala,Korba
+445,India,Kerala,Kapurthala
+446,India,Kerala,Bagdam
+447,India,Kerala,Koriya
+448,India,Kerala,Haora
+449,India,Kerala,Ludhiana
+450,India,Kerala,Baramula (Kashmir North)
+451,India,Kerala,Hugli
+452,India,Kerala,Mahasamund
+453,India,Kerala,Mansa
+454,India,Kerala,Doda
+455,India,Kerala,Jalpaiguri
+456,India,Kerala,Moga
+457,India,Kerala,Raigarh
+458,India,Kerala,Jammu
+459,India,Kerala,East Khasi Hills
+460,India,Kerala,Raipur
+461,India,Kerala,Kochbihar
+462,India,Kerala,Kargil
+463,India,Kerala,Jaintia Hills
+464,India,Kerala,Muktsar
+465,India,Kerala,Kolkata
+466,India,Kerala,Raj Nandgaon
+467,India,Kerala,Kathua
+468,India,Kerala,Ri-Bhoi
+469,India,Kerala,Nawan Shehar
+470,India,Kerala,Surguja
+471,India,Kerala,Maldah
+472,India,Kerala,Patiala
+473,India,Kerala,South Garo Hills
+474,India,Kerala,Kupwara (Muzaffarabad)
+475,India,Kerala,Murshidabad
+476,India,Kerala,Dadra and Nagar Haveli
+477,India,Kerala,Daman
+478,India,Kerala,Nadia
+479,India,Kerala,West Garo Hills
+480,India,Kerala,Ladakh (Leh)
+481,India,Kerala,Rupnagar
+482,India,Kerala,West Khasi Hills
+483,India,Kerala,Pulwama
+484,India,Kerala,Sangrur
+485,India,Kerala,Punch
+486,India,Kerala,Aizawl
+487,India,Kerala,Ajmer
+488,India,Kerala,Rajauri
+489,India,Kerala,Champhai
+490,India,Kerala,Alwar
+491,India,Kerala,North 24 Parganas
+492,India,Kerala,Srinagar
+493,India,Kerala,Banswara
+494,India,Kerala,Baran
+495,India,Kerala,Udhampur
+496,India,Kerala,Puruliya
+497,India,Kerala,Barmer
+498,India,Kerala,Bokaro
+499,India,Kerala,Bharatpur
+500,India,Kerala,Chatra
+501,India,Kerala,South 24 Parganas
+502,India,Kerala,Bhilwara
+503,India,Kerala,Deoghar
+504,India,Kerala,Uttar Dinajpur
+505,India,Kerala,Bikaner
+506,India,Kerala,Dhanbad
+507,India,Kerala,Bundi
+508,India,Kerala,West Midnapore
+509,India,Kerala,Dumka
+510,India,Kerala,Chittaurgarh
+511,India,Kerala,Garhwa
+512,India,Kerala,Churu
+513,India,Kerala,Giridih
+514,India,Kerala,Dausa
+515,India,Kerala,Godda
+516,India,Kerala,Dhaulpur
+517,India,Kerala,Gumla
+518,India,Kerala,Dungarpur
+519,India,Kerala,Hazaribag
+520,India,Kerala,Jamtara
+521,India,Kerala,Ganganagar
+522,India,Kerala,Hanumangarh
+523,India,Kerala,Koderma
+524,India,Kerala,Jaipur
+525,India,Kerala,Latehar
+526,India,Kerala,Jaisalmer
+527,India,Kerala,Lohardaga
+528,India,Kerala,Jalor
+529,India,Kerala,Pakur
+530,India,Kerala,Jhalawar
+531,India,Kerala,Palamu
+532,India,Kerala,Jhunjhunun
+533,India,Kerala,Jodhpur
+534,India,Kerala,Pashchim Singhbhum
+535,India,Kerala,Karauli
+536,India,Kerala,Purba Singhbhum
+537,India,Kerala,Kota
+538,India,Kerala,Ranchi
+539,India,Kerala,Nagaur
+540,India,Kerala,Sahibganj
+541,India,Kerala,Pali
+542,India,Kerala,Saraikela Kharsawan
+543,India,Kerala,Simdega
+544,India,Kerala,Rajsamand
+545,India,Kerala,Bagalkot
+546,India,Kerala,Sawai Madhopur
+547,India,Kerala,Bangalore Rural
+548,India,Kerala,Sikar
+549,India,Kerala,Bangalore Urban
+550,India,Kerala,Sirohi
+551,India,Kerala,Tonk
+552,India,Kerala,Belgaum
+553,India,Kerala,Udaipur
+554,India,Kerala,East
+555,India,Kerala,Bellary
+556,India,Kerala,Bidar
+557,India,Kerala,North Sikkim
+558,India,Kerala,Bijapur
+559,India,Kerala,South Sikkim
+560,India,Kerala,Chamrajnagar
+561,India,Kerala,West Sikkim
+562,India,Kerala,Chikmagalur
+563,India,Kerala,Ariyalur
+564,India,Kerala,Chennai
+565,India,Kerala,Chitradurga
+566,India,Kerala,Coimbatore
+567,India,Kerala,Dakshin Kannad
+568,India,Kerala,Cuddalore
+569,India,Kerala,Davanagere
+570,India,Kerala,Dharmapuri
+571,India,Kerala,Dindigul
+572,India,Kerala,Erode
+573,India,Kerala,Dharwad
+574,India,Kerala,Kancheepuram
+575,India,Kerala,Gadag
+576,India,Kerala,Gulbarga
+577,India,Kerala,Kanniyakumari
+578,India,Kerala,Hassan
+579,India,Kerala,Karur
+580,India,Kerala,Haveri
+581,India,Kerala,Madurai
+582,India,Kerala,Kodagu
+583,India,Kerala,Nagapattinam
+584,India,Kerala,Kolar
+585,India,Kerala,Namakkal
+586,India,Kerala,Koppal
+587,India,Kerala,Mandya
+588,India,Kerala,Nilgiris
+589,India,Kerala,Perambalur
+590,India,Kerala,Mysore
+591,India,Kerala,Pudukkottai
+592,India,Kerala,Raichur
+593,India,Kerala,Ramanathapuram
+594,India,Kerala,Salem

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="236da570-dbf5-4f98-97b6-780f6736aec6" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="3459629d-01a5-4888-beb3-73f200a1c43b" >
+		<file:connection workingDir="D:\backupfiles" />
+	</file:config>
+	<flow name="listoffilesFlow" doc:id="da41ca18-a1e4-4b3c-833c-636ebc88c2a0" >
+		<scheduler doc:name="Scheduler" doc:id="b7d36f3e-baa0-4b7f-9cc8-2ed7c3f3355a" >
+			<scheduling-strategy >
+				<fixed-frequency frequency="2" timeUnit="MINUTES"/>
+			</scheduling-strategy>
+		</scheduler>
+		<file:list doc:name="List" doc:id="1d3b0942-7eb5-4b4f-b19c-6c3310e56d5a" directoryPath="D:\csv"/>
+		<foreach doc:name="For Each" doc:id="7792bf32-5dfb-4904-90d6-a218a1ea0e41" >
+			<logger level="INFO" doc:name="Logger" doc:id="11fef52d-4f22-4f61-9e88-21323e2ed87d" message="#[payload]"/>
+			<file:write doc:name="Write" doc:id="81874d7e-9fa2-4363-a236-47f11744b5ae" config-ref="File_Config" path="#[attributes.fileName]"/>
+		</foreach>
+	</flow>
+</mule>

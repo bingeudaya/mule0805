@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="7f67f303-cb6b-49ae-b127-c4013b7fed75" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="variableexampleFlow" doc:id="bdde459d-ee52-4301-b174-39cab5c6652b" >
+		<http:listener doc:name="Listener" doc:id="f406287c-5274-4f37-94f2-81bcafcc0526" config-ref="HTTP_Listener_config" path="/vars"/>
+		<set-variable value="#[attributes.queryParams.Ename]" doc:name="Set Variable" doc:id="9e999bea-1ffa-473d-9695-8140b415e77c" variableName="Ename"/>
+		<set-payload value="#[vars.Ename]" doc:name="Set Payload" doc:id="a2ffb31d-5ece-4315-8058-85c1903d5573" />
+	</flow>
+</mule>

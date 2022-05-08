@@ -1,0 +1,72 @@
+#%RAML 1.0
+title: employdatainfo
+baseUri: http://localhost:8081/emplloy
+mediaType: 
+- application/json
+protocols:
+  - HTTP
+version: 1.0
+/createemploy:
+  post:
+    body:
+      application/json:
+        example:
+          {
+            "eno":250,
+            "ename":"testuser",
+            "sal":25000
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                "status":200,
+                "message":"Data Saved Sucssfully"
+              }
+/retriveemploy:
+  get:
+    body:
+      application/json:
+        example:
+          {
+            "status":200,
+            "message":"Data sucssfully stored"
+
+          }
+/updateemploy:
+  put:
+    body:
+      application/json:
+        example:
+          {
+            "eno":251,
+            "ename":"Venkatesh",
+            "salary":25000
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                "status":200,
+                "message":"Data updated Sucssfully"
+              }
+/deleteemploy:
+  delete:
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                "status":200,
+                "message":"Data deleted sucessfully"
+              }
+              
+              
+
+
+        

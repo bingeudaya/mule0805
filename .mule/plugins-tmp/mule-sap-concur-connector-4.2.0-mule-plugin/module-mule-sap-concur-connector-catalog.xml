@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalogs xmlns="http://www.mulesoft.org/schema/mule/types" >
+
+    
+        
+                    <catalog name="get-allocations-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-allocations-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                
+    
+        
+                    <catalog name="get-allocation-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-allocation-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+        
+                    <catalog name="get-attendees-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-attendees-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                            
+    
+                    <catalog name="create-attendee-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-attendee-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-attendee-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-attendee-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-attendee-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-attendee-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+                    <catalog name="update-attendee-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-attendee-request-data-schema.json" />
+            </catalog>
+        
+        
+                                                
+    
+        
+                    <catalog name="get-attendee-types-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-attendee-types-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+        
+                    <catalog name="get-attendee-type-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-attendee-type-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+                    <catalog name="update-attendee-type-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-attendee-type-request-data-schema.json" />
+            </catalog>
+        
+        
+                            
+    
+        
+                    <catalog name="get-digtal-tax-invoices-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-digtal-tax-invoices-response-data-schema.json" />
+            </catalog>
+        
+                                                                    
+    
+        
+                    <catalog name="get-digtal-tax-invoice-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-digtal-tax-invoice-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+                    <catalog name="update-digtal-tax-invoice-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-digtal-tax-invoice-request-data-schema.json" />
+            </catalog>
+        
+        
+                            
+    
+        
+                    <catalog name="get-expense-entries-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-expense-entries-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                                                                                                                                        
+    
+                    <catalog name="create-expense-entry-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-expense-entry-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-expense-entry-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-expense-entry-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-expense-entry-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-expense-entry-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+                    <catalog name="update-expense-entry-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-expense-entry-request-data-schema.json" />
+            </catalog>
+        
+        
+                                                
+    
+        
+        
+                                                
+    
+        
+                    <catalog name="get-entry-attendee-associations-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-entry-attendee-associations-response-data-schema.json" />
+            </catalog>
+        
+                                                                                        
+    
+                    <catalog name="create-entry-attendee-association-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-entry-attendee-association-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-entry-attendee-association-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-entry-attendee-association-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-entry-attendee-association-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-entry-attendee-association-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+                    <catalog name="update-entry-attendee-association-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-entry-attendee-association-request-data-schema.json" />
+            </catalog>
+        
+        
+                                                
+    
+        
+        
+                                                
+    
+        
+                    <catalog name="get-expense-group-configurations-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-expense-group-configurations-response-data-schema.json" />
+            </catalog>
+        
+                                                                    
+    
+        
+                    <catalog name="get-expense-group-configuration-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-expense-group-configuration-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+        
+                    <catalog name="get-expense-itemizations-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-expense-itemizations-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                
+    
+                    <catalog name="create-expense-itemization-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-expense-itemization-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-expense-itemization-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-expense-itemization-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-expense-itemization-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-expense-itemization-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+                    <catalog name="update-expense-itemization-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-expense-itemization-request-data-schema.json" />
+            </catalog>
+        
+        
+                                                
+    
+        
+        
+                                                
+    
+        
+                    <catalog name="get-quick-expenses-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-quick-expenses-response-data-schema.json" />
+            </catalog>
+        
+                                                                    
+    
+                    <catalog name="create-quick-expense-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-quick-expense-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-quick-expense-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-quick-expense-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-quick-expense-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-quick-expense-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+                    <catalog name="update-quick-expense-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-quick-expense-request-data-schema.json" />
+            </catalog>
+        
+        
+                                                
+    
+        
+        
+                                                
+    
+        
+                    <catalog name="get-receipt-images-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-receipt-images-response-data-schema.json" />
+            </catalog>
+        
+                                                                    
+    
+        
+                    <catalog name="create-receipt-image-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-receipt-image-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-receipt-image-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-receipt-image-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+        
+        
+                                                
+    
+        
+        
+                                                
+    
+        
+                    <catalog name="get-reports-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-reports-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    
+                    <catalog name="create-report-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-report-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-report-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-report-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-report-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-report-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+                    <catalog name="update-report-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-report-request-data-schema.json" />
+            </catalog>
+        
+        
+                                                
+    
+        
+                    <catalog name="get-list-items-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-list-items-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                                                                                                                                                                                                    
+    
+                    <catalog name="create-list-item-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-list-item-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-list-item-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-list-item-response-data-schema.json" />
+            </catalog>
+        
+        
+    
+        
+                    <catalog name="get-list-item-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-list-item-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+                    <catalog name="update-list-item-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-list-item-request-data-schema.json" />
+            </catalog>
+        
+        
+                            
+    
+        
+        
+                                                                    
+    
+        
+                    <catalog name="get-locations-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-locations-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                                    
+    
+        
+                    <catalog name="get-location-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-location-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-users-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-users-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                                    
+    
+                    <catalog name="create-payment-request-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-payment-request-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-payment-request-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-payment-request-response-data-schema.json" />
+            </catalog>
+        
+        
+    
+                    <catalog name="update-payment-request-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-payment-request-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="update-payment-request-response-type" format="application/json">
+                <schema format="application/json+schema" location="./update-payment-request-response-data-schema.json" />
+            </catalog>
+        
+        
+    
+        
+                    <catalog name="get-payment-request-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-payment-request-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-payment-request-digests-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-payment-request-digests-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                                                                                                                                                            
+    
+        
+                    <catalog name="get-payment-request-digest-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-payment-request-digest-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+                    <catalog name="create-purchase-order-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-purchase-order-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-purchase-order-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-purchase-order-response-data-schema.json" />
+            </catalog>
+        
+        
+    
+                    <catalog name="update-purchase-order-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-purchase-order-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="update-purchase-order-response-type" format="application/json">
+                <schema format="application/json+schema" location="./update-purchase-order-response-data-schema.json" />
+            </catalog>
+        
+        
+    
+        
+                    <catalog name="get-purchase-order-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-purchase-order-response-data-schema.json" />
+            </catalog>
+        
+                            
+    
+        
+                    <catalog name="get-invoices-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-invoices-response-data-schema.json" />
+            </catalog>
+        
+                                                                    
+    
+                    <catalog name="update-invoices-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-invoices-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="update-invoices-response-type" format="application/json">
+                <schema format="application/json+schema" location="./update-invoices-response-data-schema.json" />
+            </catalog>
+        
+        
+    
+        
+                    <catalog name="get-vendors-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-vendors-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+    
+                    <catalog name="create-vendors-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-vendors-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-vendors-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-vendors-response-data-schema.json" />
+            </catalog>
+        
+        
+    
+                    <catalog name="update-vendors-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-vendors-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="update-vendors-response-type" format="application/json">
+                <schema format="application/json+schema" location="./update-vendors-response-data-schema.json" />
+            </catalog>
+        
+        
+    
+        
+                    <catalog name="delete-vendor-response-type" format="application/json">
+                <schema format="application/json+schema" location="./delete-vendor-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+        
+                    <catalog name="get-requests-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-requests-response-data-schema.json" />
+            </catalog>
+        
+                                                                                                                                                                        
+    
+                    <catalog name="create-request-request-type" format="application/json">
+                <schema format="application/json+schema" location="./create-request-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="create-request-response-type" format="application/json">
+                <schema format="application/json+schema" location="./create-request-response-data-schema.json" />
+            </catalog>
+        
+                                                                    
+    
+        
+                    <catalog name="get-request-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-request-response-data-schema.json" />
+            </catalog>
+        
+                                                
+    
+                    <catalog name="update-request-request-type" format="application/json">
+                <schema format="application/json+schema" location="./update-request-request-data-schema.json" />
+            </catalog>
+        
+                    <catalog name="update-request-response-type" format="application/json">
+                <schema format="application/json+schema" location="./update-request-response-data-schema.json" />
+            </catalog>
+        
+                                                                                        
+    
+        
+        
+                            
+    
+        
+        
+                            
+    
+        
+                    <catalog name="get-request-group-configurations-response-type" format="application/json">
+                <schema format="application/json+schema" location="./get-request-group-configurations-response-data-schema.json" />
+            </catalog>
+        
+                                                                    
+    
+</catalogs>

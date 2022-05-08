@@ -1,0 +1,1 @@
+{"$ref":"#/definitions/DigitalTaxInvoiceCollection","definitions":{"DigitalTaxInvoiceCollection":{"type":"object","properties":{"Items":{"type":"object","properties":{"ConcurReceiptID":{"type":"string"},"ID":{"type":"string"},"URI":{"type":"string"}}},"NextPage":{"type":"string"}}}},"$schema":"http://json-schema.org/draft-04/schema#"}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="cccf97cc-795c-4f36-937c-2e9540b04e5f" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="9f6edcb5-ff36-40db-8630-ac86af39cf29" >
+		<http:request-connection protocol="HTTPS" host="jsonplaceholder.typicode.com" port="443" />
+	</http:request-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="a68bcaca-1c43-47c4-971b-a8c4599aaeb0" >
+		<db:mssql-connection host="LAPTOP-P7MRNILL" port="1433" user="mule7000" password="Passw0rd" databaseName="mulesoft8000" />
+	</db:config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="2379189c-83c4-4103-a960-08f2eea56925" >
+		<salesforce:basic-connection username="today2402@tc.com" password="Passw0rd" securityToken="lUC5GA2VZObu58SJRk1UDx9yO" />
+	</salesforce:sfdc-config>
+	<db:config name="Database_Config1" doc:name="Database Config" doc:id="e1dc85f5-a9d2-437d-a9f1-08dcc78784a3" >
+		<db:mssql-connection host="LAPTOP-P7MRNILL" port="1433" user="mule7000" password="Passw0rd" databaseName="mulesoft8000" />
+	</db:config>
+	<flow name="restdatabaseFlow" doc:id="524970a6-6bd3-4444-8589-9b11140a861d" >
+		<http:listener doc:name="Listener" doc:id="b2bafb29-0d7e-4f02-bae3-878f072236d7" config-ref="HTTP_Listener_config" path="/bulkdata"/>
+		<http:request method="GET" doc:name="Request" doc:id="b64392ff-c3fd-49b8-b4db-2fa640ac2a3f" config-ref="HTTP_Request_configuration" path="/users"/>
+		<ee:transform doc:name="Transform Message" doc:id="32202f9d-8cb6-400a-919d-f8e1187e8ee4" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="83559c8c-6305-480c-821f-fe9fdaba2eb2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map(item,index)->
+{
+	id:item.id,
+	
+	username:item.username,
+	name:item.name,
+	email:item.email
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="2679a159-84c5-4722-9f33-f8d9bc33d6f6" >
+			<db:insert doc:name="Insert" doc:id="5880d697-608f-46e0-b8ae-4449057e727a" config-ref="Database_Config">
+				<db:sql ><![CDATA[insert into populationtable(id,name,username,email) values (:id,:name,:username,:email)]]></db:sql>
+				<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+			</db:insert>
+		</foreach>
+		<db:select doc:name="Select" doc:id="099e47a5-45f4-4584-9905-cb938993e41a" config-ref="Database_Config1">
+			<db:sql ><![CDATA[select * from populationtable]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="2af5fe9a-ee10-448e-95a5-093f37b16c33" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

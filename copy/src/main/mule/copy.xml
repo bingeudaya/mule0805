@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="bc624788-4e31-4654-9b8c-08447d7f39fd" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="copyFlow" doc:id="2ff53464-c4c9-402f-b473-8ed41683e3f9" >
+		<http:listener doc:name="Listener" doc:id="4bcb5784-9b29-4ca4-9b1c-ba7a614d2af0" config-ref="HTTP_Listener_config" path="/copy"/>
+		<file:copy doc:name="Copy" doc:id="83fc2ae1-7de4-48c9-8bf5-56d5fe8a919d" sourcePath="D:\csv" targetPath="D:\mulesoft5000"/>
+	</flow>
+</mule>

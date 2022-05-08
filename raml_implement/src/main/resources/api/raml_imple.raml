@@ -1,0 +1,65 @@
+#%RAML 1.0
+title: Raml_imple
+version: 1.0
+baseUri: http://{host}:8081/employ
+baseUriParameters:
+  host:
+    enum: ["dev", "uat","prod"]
+traits:
+  error: !include /exchange_modules/7af8a4d1-09d7-46e2-a005-7305a8f1f871/errorcodesnew/1.0.0/errorcodesnew.raml
+securitySchemes:
+  oauth: !include /exchange_modules/7af8a4d1-09d7-46e2-a005-7305a8f1f871/oauthauth/1.0.0/oauthauth.raml
+securedBy:
+  - oauth
+uses:
+ data: datatypes/Datatype.raml   
+/insertemploy:
+  post:
+    is:
+      - error
+    body:
+      application/json:
+        type: data.employdatatypes
+        example:
+          {
+            "eno":250,
+            "ename":"testuser"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+           
+            example:
+              {
+                "status":200,
+                "message":"Data Saved"
+              }
+/updateemploy:
+  post:
+    is:
+      - error
+    body:
+      application/json:
+        type: data.employdatatypes
+        example:
+          {
+            "eno":250,
+            "ename":"testuser"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+           
+            example:
+              {
+                "status":200,
+                "message":"Data updated"
+              }              
+       
+        
+
+
+  
+      

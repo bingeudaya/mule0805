@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c934f8b5-befa-4484-a8ae-dd9fdf5ee25d" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="884af8d8-532b-4fb2-b244-d22a62296211" >
+		<file:connection workingDir="D:\mulesoft5000" />
+	</file:config>
+	<flow name="listexampleFlow" doc:id="e74bc1f2-d564-4334-bb0c-4ed2ff0661fa" >
+		<http:listener doc:name="Listener" doc:id="ead094f7-5b56-423f-96f1-7dd1bd1a1022" config-ref="HTTP_Listener_config" path="/list"/>
+		<file:list doc:name="List" doc:id="c2ed1a1b-e3c4-4a54-817d-a7b1078f28d6" directoryPath="C:\Users\KISHORE\OneDrive\Desktop\Su"/>
+		<foreach doc:name="For Each" doc:id="ee88f8e5-9d44-493e-961b-7e46a63b503b" >
+			<logger level="INFO" doc:name="Logger" doc:id="f9252fcb-9956-4aee-b3ec-198a0d8d0fa4" message="#[attributes.fileName]"/>
+			<file:write doc:name="Write" doc:id="04579c61-333c-4729-9579-5db2330dc49c" config-ref="File_Config" path="#[attributes.fileName]"/>
+		</foreach>
+	</flow>
+</mule>

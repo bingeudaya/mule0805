@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f92ae0f1-3e5c-4c33-bf3a-a23404016c99" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="variblesexampleFlow" doc:id="d9502248-dc6b-4f6b-9606-cb48c9c426c8" >
+		<http:listener doc:name="Listener" doc:id="19e9318e-c476-4107-8675-f41c2d658ae9" config-ref="HTTP_Listener_config" path="/vars"/>
+		<set-variable value="#[attributes.queryParams.Employname]" doc:name="Set Variable" doc:id="108292cf-1c64-4ef7-83a6-a3018d4227ff" variableName="Employname"/>
+		<set-payload value="#[vars.Employname]" doc:name="Set Payload" doc:id="80933840-b1e7-412d-9fd4-cbba8d2a155a" />
+	</flow>
+</mule>

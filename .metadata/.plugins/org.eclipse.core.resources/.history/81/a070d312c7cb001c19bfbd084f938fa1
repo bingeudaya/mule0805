@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f2d6365c-4429-4d5b-8ff9-e0a751024f54" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="java_langFlow" doc:id="7ae0873e-da9b-48a2-9902-40f1935c11b1" >
+		<http:listener doc:name="Listener" doc:id="be8bd993-141b-44c2-b355-32b6438bd31a" config-ref="HTTP_Listener_config" path="/sum"/>
+		<ee:transform doc:name="Transform Message" doc:id="b4e4a59f-b3f2-4bc6-8e1b-533b045dd5ec" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+import java !com::example::sum
+output application/json
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:s3="http://www.mulesoft.org/schema/mule/s3" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f7f8e116-44b6-4cd7-b72a-86246859a35a" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<s3:config name="Amazon_S3_Configuration" doc:name="Amazon S3 Configuration" doc:id="59aa6535-0745-4479-9819-b00149b9537e" >
+		<s3:basic-connection accessKey="AKIA3KKELEXZ5URVBR6Y" secretKey="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" />
+	</s3:config>
+	<flow name="awsgetinfoFlow" doc:id="edca96e9-a1f1-40ca-9ace-8e5fe8600d86" >
+		<http:listener doc:name="Listener" doc:id="4b046a8b-dc3b-4b60-885e-bd84c1e63434" config-ref="HTTP_Listener_config" path="/awsget"/>
+		<s3:get-object doc:name="Get object" doc:id="631b0751-b7f7-4a04-bcfb-a31715c0f02c" config-ref="Amazon_S3_Configuration" bucketName="mulefilesnew" key="readme.txt"/>
+		<logger level="INFO" doc:name="Logger" doc:id="6d1a96d5-42ca-4625-a5da-27ec92344d1a" message="#[payload]"/>
+	</flow>
+</mule>

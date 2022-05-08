@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="employedetails-suite.xml" />
+	<munit:test name="get:\productdetails:employedetails-config-test" doc:id="63fd88d1-5c91-41df-80af-b9602a635355" >
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="867ffe8c-ea96-4fcf-bd8b-809f49af2368" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1459ce2d-c2de-4e19-9774-a2c6febd627e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="c2dd3f54-a7d9-40e3-8553-41453f7b9cf7" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getproductdetailsemployedetailsconfigtest::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+					<munit-tools:assert doc:name="Assert attributes" doc:id="bc739fd7-0de9-4217-81ed-6dea294f5412" message="The attributes do not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getproductdetailsemployedetailsconfigtest::spy_assert_attributes
+---
+spy_assert_attributes::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="0e4f0ce4-09a8-43af-a299-d0012c1bcdad" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import getproductdetailsemployedetailsconfigtest::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="cd784b8c-c481-4e65-969c-c296fd882b6b" >
+				<munit:payload value="#[readUrl('classpath://getproductdetailsemployedetailsconfigtest\set-event_payload.dwl')]" encoding="UTF-8" />
+				<munit:attributes value="#[readUrl('classpath://getproductdetailsemployedetailsconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://getproductdetailsemployedetailsconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\productdetails:employedetails-config" doc:id="f250cab7-a4d9-4c90-ad74-dc17adbd2805" name="get:\productdetails:employedetails-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e7687325-0bd8-41f8-813b-5693cd8da166" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import getproductdetailsemployedetailsconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="7732908a-ff8b-4846-b256-fa8d32ef1e2e" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="1459ce2d-c2de-4e19-9774-a2c6febd627e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\createaccount:application\json:employedetails-config-test" doc:id="f23b9c06-0343-4264-aca6-30faa149d44c" >
+		<munit:behavior >
+			<munit-tools:spy doc:name="Spy Transform Message" doc:id="a4b5d44e-89f3-4073-b313-014adc138422" processor="ee:transform">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e6cff113-6f0b-41b6-b0e5-cf08313c27f2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:before-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="aad2a23f-b074-496f-b7eb-ff086a18264b" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcreateaccountapplicationjsonemployedetailsconfigtest::spy_assert_payload
+---
+spy_assert_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:before-call>
+				<munit-tools:after-call >
+					<munit-tools:assert doc:name="Assert payload" doc:id="9930e77e-0988-4ec9-a4c5-1b797a262687" message="The payload does not match">
+						<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcreateaccountapplicationjsonemployedetailsconfigtest::spy_assert_payload1
+---
+spy_assert_payload1::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+					</munit-tools:assert>
+				</munit-tools:after-call>
+			</munit-tools:spy>
+			<munit:set-event doc:name="Set Input" doc:id="d45de451-faf2-46b5-a2c7-f65a6864ec1f" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcreateaccountapplicationjsonemployedetailsconfigtest\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcreateaccountapplicationjsonemployedetailsconfigtest\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateaccountapplicationjsonemployedetailsconfigtest\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\createaccount:application\json:employedetails-config" doc:id="90c86084-533a-4eb1-87f6-5c196052bbba" name="post:\createaccount:application\json:employedetails-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="d0ec4325-1e9a-4c18-9264-04b799d125a0" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcreateaccountapplicationjsonemployedetailsconfigtest::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+			<munit-tools:verify-call doc:name="Verify Transform Message" doc:id="c9213213-827b-45b7-92f9-3f0b4b6daa77" processor="ee:transform" times="1">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e6cff113-6f0b-41b6-b0e5-cf08313c27f2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="18bd700d-819e-4b5d-892e-ca87624809b9" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="76cdcb2f-5820-4a78-87c1-a5b91dec32f4" >
+		<salesforce:basic-connection username="today2402@tc.com" password="Passw0rd" securityToken="VLERlFCmFc6SHRuJyIOQt10Yh" />
+	</salesforce:sfdc-config>
+	<flow name="salesofroce_queryallFlow" doc:id="f0384c80-afa3-4351-aa58-df59d56c5cdf" >
+		<http:listener doc:name="Listener" doc:id="2617af31-fed4-4c87-b911-d615f7c9c53d" config-ref="HTTP_Listener_config" path="/query"/>
+		<salesforce:query-all doc:name="Query all" doc:id="4ccd4bd3-f16f-488b-a80f-240150b81f26" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT AccountNumber, BillingCity, BillingCountry, Id, Name, Phone FROM Account]]></salesforce:salesforce-query>
+		</salesforce:query-all>
+		<ee:transform doc:name="Transform Message" doc:id="49b3f5cb-3e15-4ee7-a062-a535cde01528" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

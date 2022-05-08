@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:s3="http://www.mulesoft.org/schema/mule/s3" xmlns:sftp="http://www.mulesoft.org/schema/mule/sftp"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/sftp http://www.mulesoft.org/schema/mule/sftp/current/mule-sftp.xsd
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0f9fdf3d-0093-4d7b-876c-1903f79584f7" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<sftp:config name="SFTP_Config" doc:name="SFTP Config" doc:id="dff5830c-a86f-4631-a04a-f812bb7e45ae" >
+		<sftp:connection host="test.rebex.net" username="demo" password="password" />
+	</sftp:config>
+	<s3:config name="Amazon_S3_Configuration" doc:name="Amazon S3 Configuration" doc:id="04a32de4-de05-4c27-8ccd-f48de30a5733" >
+		<s3:basic-connection accessKey="AKIA3KKELEXZ5URVBR6Y" secretKey="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" />
+	</s3:config>
+	<flow name="awswithsftpFlow" doc:id="b6e4953d-b73f-462c-8e82-9ef3b8f05baf" >
+		<http:listener doc:name="Listener" doc:id="f33417a1-8e47-472d-9b09-a3d7c8668ae4" config-ref="HTTP_Listener_config" path="/aws"/>
+		<sftp:read doc:name="Read" doc:id="c6992899-4005-464c-9df7-7724fa63af05" config-ref="SFTP_Config" path="/pub/example/readme.txt"/>
+		<logger level="INFO" doc:name="Logger" doc:id="259665f9-8cea-4388-874f-24e051dacda9" message="#[payload]"/>
+		<s3:create-object doc:name="Create object" doc:id="e1f6b37a-02da-4a1b-a7a9-41fad12441e8" config-ref="Amazon_S3_Configuration" bucketName="mulefilesnew" key="readme.txt"/>
+	</flow>
+</mule>

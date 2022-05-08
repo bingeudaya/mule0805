@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6e1a06b5-e92a-4543-a824-7dd5f3b2590b" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="muleapp2Flow" doc:id="60f48fb6-320a-4b11-8a56-3e8a0e898736" >
+		<http:listener doc:name="Listener" doc:id="280ab25e-397d-4a38-964f-1591b85483c4" config-ref="HTTP_Listener_config" path="/sample"/>
+		<set-payload value="#[attributes.]" doc:name="Welcome_Msg" doc:id="450a1de8-33ee-41e8-aa75-230b27a71d64" />
+		<logger level="INFO" doc:name="Sample" doc:id="60f43d59-ec19-4c63-b162-01df0f59cbb3" message="welcome mulesoft demo"/>
+	</flow>
+</mule>

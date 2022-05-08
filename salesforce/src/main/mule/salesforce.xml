@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="4b75e248-91e5-4983-b9e2-72a0b62aba54" >
+		<salesforce:basic-connection username="today2402@tc.com" password="Passw0rd" securityToken="VLERlFCmFc6SHRuJyIOQt10Yh" />
+	</salesforce:sfdc-config>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="9f5cff15-9dcc-4ca0-9c25-91e830f3a13e" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="salesforceFlow" doc:id="56993b79-d529-45af-801d-a60d7231efc9" >
+		<http:listener doc:name="Listener" doc:id="ccbcd799-0c29-47cc-863e-35384ad9cf3e" config-ref="HTTP_Listener_config" path="/sc"/>
+		<ee:transform doc:name="Transform Message" doc:id="7681e08f-03bd-45d5-a9b4-9cc766c3c056" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+[{
+	Name: payload.n,
+	BillingStreet: payload.b,
+	BillingCity: payload.bc,
+	BillingState: payload.bs,
+	BillingPostalCode: payload.bp,
+	BillingCountry: payload.bcc
+}]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:create doc:name="Create" doc:id="b73badee-86d2-432d-9735-ce9c1397a1c3" config-ref="Salesforce_Config" type="Account"/>
+		<ee:transform doc:name="Transform Message" doc:id="b2146662-14c5-4a3a-bac4-2c16187d7e27" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"Data saved"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

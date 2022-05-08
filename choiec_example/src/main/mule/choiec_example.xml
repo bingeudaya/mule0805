@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="1e46b38f-6a73-4c1f-9995-704285f9efa2" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="choiec_exampleFlow" doc:id="76822c81-251c-4bbb-8f1e-0a2cc7cc98ee" >
+		<http:listener doc:name="Listener" doc:id="b6ac0cfb-da6f-4455-94f3-dffb11992f39" config-ref="HTTP_Listener_config" path="/gradesystem"/>
+		<choice doc:name="Choice" doc:id="ca8c70de-b0b1-42ed-854a-49e2f55c3638" >
+			<when expression="#[attributes.queryParams.Grade=='A']">
+				<set-payload value="Firstclass" doc:name="Set Payload" doc:id="7232429e-968c-4290-a693-7a922ed75347" />
+			</when>
+			<when expression="#[attributes.queryParams.Grade=='B']">
+				<set-payload value="Second Class" doc:name="Set Payload" doc:id="933989d4-3152-4f58-bb16-7033b8c2a0d2" />
+			</when>
+			<when expression="#[attributes.queryParams.Grade=='C']">
+				<set-payload value="ThirdClass" doc:name="Set Payload" doc:id="b96c16a7-fa69-48fd-b4ef-8ab16570c49f" />
+			</when>
+			<otherwise >
+				<set-payload value="Fail" doc:name="Set Payload" doc:id="24524b46-c478-4359-ad11-bfdad45f815b" />
+			</otherwise>
+		</choice>
+		<jms:publish doc:name="Publish" doc:id="3582adfe-c3b6-4310-8cc7-fbbe13907c76" />
+	</flow>
+</mule>

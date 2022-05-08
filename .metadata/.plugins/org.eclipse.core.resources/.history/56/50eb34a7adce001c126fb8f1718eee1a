@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="fa3d91f5-aa63-42b7-9f1b-978d33f238cd" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="56b1798e-daff-49fa-b17a-d20279185e50" >
+		<db:mssql-connection host="LAPTOP-P7MRNILL" port="1433" user="mule7000" password="Passw0rd" databaseName="mulesoft8000" />
+	</db:config>
+	<flow name="paralle_foreachFlow" doc:id="3b7e0920-5109-4dae-a521-8914ec85f429" >
+		<http:listener doc:name="Listener" doc:id="1cefcb72-9d3a-43d8-bf53-bd40b4ad60a6" config-ref="HTTP_Listener_config" path="/pf"/>
+		<file:read doc:name="Read" doc:id="038aaec2-84c5-4fe2-b18f-53b1e175fb03" path="D:\csv\empdata New.csv"/>
+		<ee:transform doc:name="Transform Message" doc:id="3e521d7b-5665-49b1-9f61-3655ff39bd41" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map(item,index)->
+{
+	FID:item.FID,
+	country:item.country,
+	state:item.state,
+	distic:item.distic
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<parallel-foreach doc:name="Parallel For Each" doc:id="c73d3148-2d33-455d-897e-d5c90177ec60" >
+			<db:insert doc:name="Insert" doc:id="8d9cd690-2eb6-4984-b51a-a4d5d0c9fb66" config-ref="Database_Config">
+				<db:sql ><![CDATA[insert into employinfo (FID,country,state,distic) values(:FID,:country,:state,:distic)]]></db:sql>
+			</db:insert>
+		</parallel-foreach>
+		<logger level="INFO" doc:name="Logger" doc:id="62301254-39f0-4546-a542-b3289fec2231" message="Data saved Sucssfully"/>
+	</flow>
+</mule>

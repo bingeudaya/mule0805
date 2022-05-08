@@ -1,0 +1,1 @@
+{"$ref":"#/definitions/DigitalTaxInvoiceGetSingle","definitions":{"DigitalTaxInvoiceGetSingle":{"type":"object","properties":{"AccountID":{"type":"string"},"ConcurReceiptID":{"type":"string"},"DocumentID":{"type":"string"},"ReceiptData":{"type":"string"}}}},"$schema":"http://json-schema.org/draft-04/schema#"}

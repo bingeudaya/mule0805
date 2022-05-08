@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="12607c64-1443-496b-83e8-dd3d524b6c7f" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="78cbb7d8-b51f-4fb1-88d7-c73bd5aa7e02" >
+		<http:request-connection protocol="HTTPS" host="jsonplaceholder.typicode.com" port="443" />
+	</http:request-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="26e53580-29f6-4e40-b033-605a74066793" >
+		<db:mssql-connection host="LAPTOP-P7MRNILL" port="1433" user="mule7000" password="Passw0rd" databaseName="mulesoft8000" />
+	</db:config>
+	<flow name="rest_databaseFlow" doc:id="3c9f8e9b-fec0-4011-9a92-6bbbdf70a84e" >
+		<http:listener doc:name="Listener" doc:id="fb1f0314-6d50-4c7b-8f86-e13818136bb9" config-ref="HTTP_Listener_config" path="/restdb"/>
+		<http:request method="GET" doc:name="Request" doc:id="0b9615fd-9222-45df-98e2-bd76bc91634f" config-ref="HTTP_Request_configuration" path="/users"/>
+		<ee:transform doc:name="Transform Message" doc:id="8fd64f84-b174-4a1f-a95f-3f8fcbd92cb0" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="66d24f84-60f1-423c-bad9-fc1cc1b1018f" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map(item,index)->
+{
+	id:item.id,
+	name:item.name,
+	username:item.username,
+	email:item.email
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<db:bulk-insert doc:name="Bulk insert" doc:id="df4d5dec-ecef-4166-9182-af3d7d63484a" config-ref="Database_Config">
+			<db:sql ><![CDATA[insert into populationtable(id,name,username,email) values (:id,:name,:username,:email)]]></db:sql>
+		</db:bulk-insert>
+		<set-payload value="Data saved sucsfully" doc:name="Set Payload" doc:id="1e17492c-ecfc-4e0b-be67-e687b382d957" />
+	</flow>
+</mule>

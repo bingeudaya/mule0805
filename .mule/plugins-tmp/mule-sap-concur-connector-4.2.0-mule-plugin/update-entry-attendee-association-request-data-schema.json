@@ -1,0 +1,1 @@
+{"type":"object","properties":{"Amount":{"type":"number"},"AssociatedAttendeeCount":{"type":"integer"},"Custom1":{"type":"string"},"Custom2":{"type":"string"},"Custom3":{"type":"string"},"Custom4":{"type":"string"},"Custom5":{"type":"string"}},"definitions":{},"$schema":"http://json-schema.org/draft-04/schema#"}

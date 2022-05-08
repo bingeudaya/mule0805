@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="8bc8d93f-cc1a-4d81-9772-17787558d74e" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="creatediretoryFlow" doc:id="84023352-c65c-427c-a063-7ddb470bcf23" >
+		<http:listener doc:name="Listener" doc:id="10268603-5b84-4022-8be6-ec590f5a04e9" config-ref="HTTP_Listener_config" path="/cd"/>
+		<file:create-directory doc:name="Create directory" doc:id="feac6a9f-a3c2-4baf-896e-11c136872b7a" directoryPath="D:\mule9ambatch"/>
+		<set-payload value="Folder is created In Localsystem" doc:name="Set Payload" doc:id="3ad9902c-610d-4285-91d8-a661aad455c3" />
+	</flow>
+</mule>

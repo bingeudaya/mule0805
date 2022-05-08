@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4e3d16ac-befd-4fa6-938d-1df2f36b5519" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="errorhandlingFlow" doc:id="eb77323e-c65e-4e8f-b426-5de2666f578a" >
+		<http:listener doc:name="Listener" doc:id="2735d294-55ce-42a7-8996-b9142920a796" config-ref="HTTP_Listener_config" path="/errro"/>
+		<flow-ref doc:name="Flow Reference" doc:id="7e414d76-facc-4ff6-8f45-0ddbeb9347d5" name="errorhandlingFlow1" />
+		<set-payload value="Hello world" doc:name="Set Payload" doc:id="5ed05984-d67f-4f0f-890a-15e18181ab36" />
+		<error-handler>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="009c5050-5724-4e80-bc5d-7563e0e167b8" >
+				<ee:transform doc:name="Transform Message" doc:id="4ebe252a-a1ac-4b39-9186-f352822d1fa4" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+"messge":"Mainflow"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+	<flow name="errorhandlingFlow1" doc:id="afe1c76c-b33b-46b0-af7c-7789313096ba" >
+		<ee:transform doc:name="Transform Message" doc:id="109801cd-6fd5-43d4-bf22-88bdad38a40e" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":50/0
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a426ead1-a566-43e1-bbbf-79752b588931" >
+				<ee:transform doc:name="Transform Message" doc:id="cd50e040-5130-4708-a10a-9469aeb0e3d9" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"Subflow"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+</mule>

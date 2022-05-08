@@ -1,0 +1,1 @@
+{"$ref":"#/definitions/InvoiceStatus","definitions":{"InvoiceStatus":{"type":"object","properties":{"Code":{"type":"integer"},"Comments":{"type":"string"},"Message":{"type":"string"},"RecordNumber":{"type":"integer"},"Status":{"type":"string"},"TaxReferenceID":{"type":"string"},"Type":{"type":"string"}}}},"$schema":"http://json-schema.org/draft-04/schema#"}

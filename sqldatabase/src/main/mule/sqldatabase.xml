@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="35c881b4-133e-4ad5-8aa2-82d7cc616f53" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="01fa19fe-c0bf-4772-b02c-a71d2e039c35" >
+		<db:mssql-connection host="LAPTOP-P7MRNILL" port="1433" user="mule5000" password="Passw0rd" databaseName="mulesoft5000" />
+	</db:config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="65f98875-ac69-4712-8af3-8ef06c629232" >
+		<salesforce:basic-connection username="today14032021@tc.com" password="Passw0rd" securityToken="IkL2F45J8f2E6ZC7m6DqI1gr8" />
+	</salesforce:sfdc-config>
+	<flow name="sqldatabaseFlow" doc:id="c5f0f07f-cad3-4f8f-be05-953759e89af2" >
+		<http:listener doc:name="Listener" doc:id="425b36a5-a70b-47dc-aaf4-bd974eb31ede" config-ref="HTTP_Listener_config" path="/getdata"/>
+		<db:select doc:id="6dd33c29-f7b7-4836-8482-24149fb72fb2" config-ref="Database_Config">
+			<db:sql ><![CDATA[select * from students]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="ec77a54f-01d6-4ec0-9bab-9f7935e7b105" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="e14e4452-930e-4fee-8e33-8364b4b43602" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	Name: (payload01.name default "")
+	,
+	ParentId: payload01.sage
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:create doc:name="Create" doc:id="d4a50ba4-a5c8-431f-9a90-447f4fc029df" config-ref="Salesforce_Config" type="Account"/>
+	</flow>
+</mule>

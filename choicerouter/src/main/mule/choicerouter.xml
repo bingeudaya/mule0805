@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="5b28991e-5bbf-4b6f-a95d-58d9a38541bf" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<flow name="choicerouterFlow" doc:id="5c78b494-b209-40f2-bfca-853feaea66f1" >
+		<http:listener doc:name="Listener" doc:id="63847d31-e7d1-4f4e-ae3a-6c6325c0d1c2" config-ref="HTTP_Listener_config" path="/choice"/>
+		<logger level="INFO" doc:name="Logger" doc:id="e827c350-fd1a-48ae-adff-306039fca671" message="choice flow will be excuted"/>
+		<choice doc:name="Choice" doc:id="85ff5017-a670-4af5-8938-3f13acc09c74" >
+			<when expression="#[attributes.queryParams.grade=='A']">
+				<set-payload value="Firstclass" doc:name="Set Payload" doc:id="ef32e4a1-a97d-4791-8fc0-03afa1f0b0aa" />
+			</when>
+			<when expression="#[attributes.queryParams.grade=='B']">
+				<set-payload value="Second Class" doc:name="Set Payload" doc:id="89bb2566-2935-43c0-bc37-c7b869a65917" />
+			</when>
+			<when expression="#[attributes.queryParams.grade=='C']">
+				<set-payload value="Thirdclass" doc:name="Set Payload" doc:id="47732895-8956-4187-ac3d-7157e9778a18" />
+			</when>
+			<otherwise >
+				<set-payload value="Fail" doc:name="Set Payload" doc:id="8959bc4b-acd9-459c-8ad6-e244d612da62" />
+			</otherwise>
+		</choice>
+	</flow>
+</mule>

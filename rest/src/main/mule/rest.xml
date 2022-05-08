@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d6e8c881-afe1-4831-93af-13199e49e520" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3a5b455f-e983-4cb7-8336-53e3a733af4a" >
+		<http:request-connection protocol="HTTPS" host="jsonplaceholder.typicode.com" port="443" />
+	</http:request-config>
+	<flow name="restFlow" doc:id="9b5f9be1-dc5e-4bbb-b5e4-32ec73794e18" >
+		<http:listener doc:name="Listener" doc:id="c42ca118-a1bd-47af-8f11-29fa11782525" config-ref="HTTP_Listener_config" path="/rest"/>
+		<flow-ref doc:name="Flow Reference" doc:id="ff7681b9-79f3-4584-87cd-5db80fe6230e" name="restFlow1"/>
+		<ee:transform doc:name="Transform Message" doc:id="6ae3f7ec-9a32-458a-becd-8bc1c07c340b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"mesaage":"on error contuninue"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<error-handler>
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="c9c7bab8-3d3d-4648-bc9b-c9a9e36235b5" >
+				<ee:transform doc:name="Transform Message" doc:id="86b7b76a-1a81-4245-9127-6c7d06bc5d30" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"heloo"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="restFlow1" doc:id="c6d7d691-eb14-4d53-bb75-54856400c996" >
+		<ee:transform doc:name="Transform Message" doc:id="b5c198c8-ef11-4116-af9c-e010a998a30b" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":50/0
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<error-handler>
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="761c76ba-7d66-479e-ac75-2495d3eb2535" >
+				<ee:transform doc:name="Transform Message" doc:id="8134fe45-ce50-47f9-8529-4a53d57cdb0d" >
+					<ee:message >
+						<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"message":"mainflow"
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

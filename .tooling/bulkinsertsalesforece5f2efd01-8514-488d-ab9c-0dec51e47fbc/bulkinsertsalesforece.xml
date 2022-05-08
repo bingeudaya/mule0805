@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="4216d34e-8700-4f5c-af6e-ad0ac4611ae3" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="3f24a491-f08e-4ba1-aae5-8be1e6813c7d" >
+		<salesforce:basic-connection username="today2402@tc.com" password="Passw0rd" securityToken="VLERlFCmFc6SHRuJyIOQt10Yh" />
+	</salesforce:sfdc-config>
+	<flow name="bulkinsertsalesforeceFlow" doc:id="888b24ad-4ea0-49e9-8f62-687fdb18f928" >
+		<http:listener doc:name="Listener" doc:id="50ab32b6-9e8f-48f6-bab8-d2f6b6317676" config-ref="HTTP_Listener_config" path="/insert"/>
+		<file:read doc:name="Read" doc:id="77ad230a-2194-4453-a932-eef947a62704" path="D:\csv\Acoountdata.csv"/>
+		<ee:transform doc:name="Transform Message" doc:id="90231648-5450-4b2d-ab4f-2642a9b89991" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce:create type="" doc:name="Create" doc:id="4ac0020f-727c-43ed-b46c-dcecc8edaaa3" />
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="feea6967-9ec2-4f06-9de7-4cfe12840527" />
+	</flow>
+</mule>

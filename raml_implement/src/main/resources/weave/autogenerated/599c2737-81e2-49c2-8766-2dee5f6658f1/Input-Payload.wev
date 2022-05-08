@@ -1,0 +1,8 @@
+%dw 2.0
+
+type auto_599c2737_81e2_49c2_8766_2dee5f6658f1_Input_Payload = {
+  ename: String, 
+  eno?: Number, 
+  _?: Any
+}
+

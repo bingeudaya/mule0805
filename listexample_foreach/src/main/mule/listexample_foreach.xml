@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<flow name="listexample_foreachFlow" doc:id="d01b839f-5a13-41e1-a6fd-4049bc074eaf" >
+		<http:listener doc:name="Listener" doc:id="6be53612-bff0-4414-906b-f33493f3b8d7" />
+		<file:list doc:name="List" doc:id="6d60c279-6e61-428b-b828-aaa09c46b9c7" />
+		<foreach doc:name="For Each" doc:id="b4836e09-96e1-4d8a-ac31-af6179a34fb7" >
+			<logger level="INFO" doc:name="Logger" doc:id="22badfc1-8808-4814-a666-b9df53cd7d04" />
+			<file:write doc:name="Write" doc:id="bb7d58c8-03bf-419b-9668-fc7db4c773d0" />
+		</foreach>
+	</flow>
+</mule>
